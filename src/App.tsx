@@ -14,6 +14,7 @@ import { auth } from "./shared/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLocation } from "react-router-dom";
 import { useStore } from "./store";
+import ChatBox from "./pages/ChatBox";
 
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
@@ -49,6 +50,7 @@ const App: FC = () => {
       <Route path="history" element={<History />} />
       <Route path="category/:id" element={<Category />} />
       <Route path="discovery" element={<Discovery />} />
+      <Route path="chat-box" element={<ChatBox />} />
     </Routes>
   );
 };

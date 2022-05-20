@@ -77,6 +77,18 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <Link
+              to="/chat-box"
+              className={`flex items-center gap-2 transition ${
+                location.pathname === "/history"
+                  ? "text-primary border-r-4 border-primary hover:brightness-125"
+                  : "text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              <i className="fas fa-comment text-xl w-[24px]"></i>
+              <p className="block sm:hidden xl:block">Chat box</p>
+            </Link>
+
+            <Link
               to="/history"
               className={`flex items-center gap-2 transition ${
                 location.pathname === "/history"
@@ -87,6 +99,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <i className="fas fa-history text-xl w-[24px]"></i>
               <p className="block sm:hidden xl:block">History</p>
             </Link>
+            
 
             <Link
               to="/search"

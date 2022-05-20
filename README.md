@@ -1,6 +1,6 @@
-# Filmhot
+# VMC Social 
 
-AdFree Movie / Anime Watching Website
+Social media for watching film, chat, post blog
 
 <p align="center">
   <img alt="Stars" src="https://badgen.net/github/stars/napthedev/filmhot">
@@ -8,10 +8,6 @@ AdFree Movie / Anime Watching Website
   <img alt="Issues" src="https://badgen.net/github/issues/napthedev/filmhot">
   <img alt="Commits" src="https://badgen.net/github/commits/napthedev/filmhot">
 </p>
-
-## Live demo
-
-Official website: [https://filmhot.live](https://filmhot.live)
 
 ## Movie sources
 
@@ -38,18 +34,6 @@ I have created a documentation on how to leak their api: [https://documenter.get
 - Watch history
 - Comments (require authentication using google, facebook)
 
-## Installation
-
-- Clone the Project
-- Run `npm install`
-- Create your own firebase project and add _The JSON stringified_ config to `VITE_FIREBASE_CONFIG` environment variable
-
-- Example .env file:
-
-```env
-VITE_FIREBASE_CONFIG={"apiKey":"","authDomain":"","projectId":"","storageBucket":"","messagingSenderId":"","appId":""}
-```
-
 ## Screenshots, Preview
 
 ![Screenshot 1](https://res.cloudinary.com/naptest/image/upload/v1641805138/filmhot/filmhot_npivh7.jpg)
@@ -57,6 +41,3 @@ VITE_FIREBASE_CONFIG={"apiKey":"","authDomain":"","projectId":"","storageBucket"
 ![Screenshot 3](https://res.cloudinary.com/naptest/image/upload/v1641805139/filmhot/filmhot-3_x77nha.jpg)
 ![Screenshot 4](https://res.cloudinary.com/naptest/image/upload/v1641805139/filmhot/filmhot-4_l8x5h7.jpg)
 
-## Summary
-
-### 👉 If you like this project, give it a star ✨ and share 👨🏻‍💻 it to your friends 👈

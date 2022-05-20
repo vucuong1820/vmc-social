@@ -33,7 +33,7 @@ const Home: FC = () => {
 
   return (
     <>
-      <Title value="FilmHot - AdFree Movie / Anime Watching Website" />
+      <Title value="VMC Social - Movie / Social / Messenger" />
 
       <div className="flex sm:hidden justify-between px-[4vw] mt-6">
         <Link to="/" className="flex items-center gap-2">
