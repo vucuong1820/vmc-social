@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import { IMAGE_PROXY, THEMES } from "../../shared/constants";
 import {
   addDoc,
   collection,
@@ -10,10 +9,11 @@ import {
 } from "firebase/firestore";
 
 import Spin from "react-cssfx-loading/src/Spin";
-import { db } from "../../shared/firebase";
-import { useCollectionQuery } from "../../hooks/useCollectionQuery";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "../../store";
+import { useCollectionQuery } from "../../../hooks/useCollectionQuery";
+import { db } from "../../../shared/firebase";
+import { useStore } from "../../../store";
+import { IMAGE_PROXY, THEMES } from "../../../shared/constants";
 
 interface CreateConversationProps {
   setIsOpened: (value: boolean) => void;

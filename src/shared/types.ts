@@ -155,15 +155,15 @@ export interface SearchConfig {
   }[];
 }
 
-export interface User {
-  uid: string;
-  email: string;
-  photoURL: string;
-  displayName: string;
-}
+// export interface User {
+//   uid: string;
+//   email: string;
+//   photoURL: string;
+//   displayName: string;
+// }
 
 export interface CommentType {
-  user: User;
+  user: any;
   value: string;
   reactions: {
     [key: string]: number;

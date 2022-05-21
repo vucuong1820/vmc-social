@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { IMAGE_PROXY } from "../../shared/constants";
-import { useStore } from "../../store";
+import { IMAGE_PROXY } from "../../../shared/constants";
+import { useStore } from "../../../store";
 
 interface UserInfoProps {
   isOpened: boolean;

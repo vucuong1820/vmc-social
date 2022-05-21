@@ -13,9 +13,13 @@ import TopSearches from "../components/Home/TopSearches";
 import { getHome } from "../services/home";
 import { resizeImage } from "../shared/constants";
 import useSWRInfinite from "swr/infinite";
+import { useStore } from "../store";
 
 const Home: FC = () => {
   const getKey = (index: number) => `home-${index || 0}`;
+  const currentUser = useStore((state) => state.currentUser);
+  console.log(currentUser)
+
 
   const { data, error, setSize } = useSWRInfinite(
     getKey,
