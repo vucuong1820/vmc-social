@@ -1,49 +1,69 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import { FC, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+
+import BarWave from "react-cssfx-loading/src/BarWave";
+import { onAuthStateChanged } from "firebase/auth";
+import PrivateRoute from "../components/PrivateRoute";
 import { useStore } from "../store";
-import { ChatEngine } from "react-chat-engine";
-import SideBarChatbox from "../components/Chat Box/SideBarChatbox";
+import { auth, db } from "../shared/firebase";
+import Home from "./ChatBox/Home";
+import Chat from "./ChatBox/Chat";
+import SideBar from "../components/ChatBox/Home/Sidebar";
 
-ChatBox.propTypes = {};
-
-function ChatBox(props: any) {
-  const [sidebarActive, setSidebarActive] = useState(false);
+const ChatBox: FC = () => {
   const currentUser = useStore((state) => state.currentUser);
+  const setCurrentUser = useStore((state) => state.setCurrentUser);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber || user.providerData?.[0]?.phoneNumber,
+        });
+      } else setCurrentUser(null);
+    });
+  }, []);
+
+  if (typeof currentUser === "undefined")
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <BarWave />
+      </div>
+    );
 
   return (
-    <>
-      <div className="mt-6 flex justify-between px-[4vw] sm:hidden">
-        <Link to="/" className="flex items-center gap-2">
-          <img className="h-8 w-8" src="/icon.png" alt="" />
-          <span className="text-xl font-medium">FilmHot</span>
-        </Link>
+    <div className="flex">
+      <SideBar />
 
-        <button onClick={() => setSidebarActive(!sidebarActive)}>
-          <i className="fas fa-bars text-2xl"></i>
-        </button>
+      <div className="hidden flex-grow flex-col items-center justify-center gap-3 md:!flex">
+        <h1 className="text-center">Select a conversation to start chatting</h1>
       </div>
-
-      <div className="flex">
-        <Sidebar
-          sidebarActive={sidebarActive}
-          setSidebarActive={setSidebarActive}
-        />
-
-        <SideBarChatbox />
-
-        <div className="hidden flex-grow flex-col items-center justify-center gap-3 md:!flex">
-
-          <h1 className="text-center">
-            Select a conversation to start chatting
-          </h1>
-
-        </div>
-
-      </div>
-    </>
+    </div>
+    // <Routes>
+    //   <Route
+    //     index
+    //     element={
+    //       <PrivateRoute>
+    //         <Home />
+    //       </PrivateRoute>
+    //     }
+    //   />
+    //   <Route
+    //     path=":id"
+    //     element={
+    //       <PrivateRoute>
+    //         <Chat />
+    //       </PrivateRoute>
+    //     }
+    //   />
+    // </Routes>
   );
-}
+};
 
 export default ChatBox;

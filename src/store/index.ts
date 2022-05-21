@@ -1,13 +1,12 @@
-import { User } from "../shared/types";
+import { User } from "firebase/auth";
 import create from "zustand";
 
-interface Store {
-  currentUser: null | undefined | User;
-
-  setCurrentUser: (user: any) => void;
+interface StoreType {
+  currentUser: undefined | null | User;
+  setCurrentUser: (user: User | null) => void;
 }
 
-export const useStore = create<Store>((set: any) => ({
+export const useStore = create<StoreType>((set: any) => ({
   currentUser: undefined,
-  setCurrentUser: (user: any) => set({ currentUser: user }),
+  setCurrentUser: (user) => set({ currentUser: user }),
 }));

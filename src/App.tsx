@@ -10,11 +10,13 @@ import Movie from "./pages/Movie";
 import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 import TV from "./pages/TV";
-import { auth } from "./shared/firebase";
+import { auth, db } from "./shared/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLocation } from "react-router-dom";
 import { useStore } from "./store";
 import ChatBox from "./pages/ChatBox";
+import { doc, setDoc } from "firebase/firestore";
+import Chat from "./pages/ChatBox/Chat";
 
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
@@ -23,11 +25,13 @@ const App: FC = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser({
+        setCurrentUser(user);
+        setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email: user.email,
-          photoURL: user.photoURL,
           displayName: user.displayName,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber || user.providerData?.[0]?.phoneNumber,
         });
       } else {
         setCurrentUser(null);
@@ -51,6 +55,7 @@ const App: FC = () => {
       <Route path="category/:id" element={<Category />} />
       <Route path="discovery" element={<Discovery />} />
       <Route path="chat-box" element={<ChatBox />} />
+      <Route path="chat-box/:id" element={<Chat />} />
     </Routes>
   );
 };

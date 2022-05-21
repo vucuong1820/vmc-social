@@ -1,12 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 
-import { ConversationInfo } from "../../shared/types";
 import { FC } from "react";
-import { IMAGE_PROXY } from "../../shared/constants";
-import Skeleton from "../Skeleton";
-import { useLastMessage } from "../../hooks/useLastMessage";
-import { useStore } from "../../store";
-import { useUsersInfo } from "../../hooks/useUsersInfo";
+import { useUsersInfo } from "../../../hooks/useUsersInfo";
+import Skeleton from "../../Skeleton"
+import { useStore } from "../../../store";
+import { useLastMessage } from "../../../hooks/useLastMessage";
+import { IMAGE_PROXY } from "../../../shared/constants";
+import { ConversationInfo } from "../../../shared/types";
 
 interface SelectConversationProps {
   conversation: ConversationInfo;
@@ -44,7 +44,7 @@ const SelectConversation: FC<SelectConversationProps> = ({
   if (conversation.users.length === 2)
     return (
       <Link
-        to={`/${conversationId}`}
+        to={`/chat-box/${conversationId}`}
         className={`hover:bg-dark-lighten relative flex items-stretch gap-2 py-2 px-5 transition duration-300 ${
           conversationId === id ? "!bg-[#263342]" : ""
         }`}
