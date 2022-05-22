@@ -18,7 +18,7 @@ const Explore: FC = () => {
 
   return (
     <>
-      <Title value="Explore - FilmHot" />
+      <Title value="Explore - VMC Social" />
       <div className="flex flex-col items-stretch min-h-screen mx-[7vw]">
         <NavBar />
 

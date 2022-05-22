@@ -10,6 +10,7 @@ import { auth, db } from "../shared/firebase";
 import Home from "./ChatBox/Home";
 import Chat from "./ChatBox/Chat";
 import SideBar from "../components/ChatBox/Home/Sidebar";
+import Title from "../components/Title";
 
 const ChatBox: FC = () => {
   const currentUser = useStore((state) => state.currentUser);
@@ -38,31 +39,15 @@ const ChatBox: FC = () => {
     );
 
   return (
+    <>
+    <Title value="Chat Box - VMC Social" />
     <div className="flex">
       <SideBar />
-
       <div className="hidden flex-grow flex-col items-center justify-center gap-3 md:!flex">
         <h1 className="text-center">Select a conversation to start chatting</h1>
       </div>
     </div>
-    // <Routes>
-    //   <Route
-    //     index
-    //     element={
-    //       <PrivateRoute>
-    //         <Home />
-    //       </PrivateRoute>
-    //     }
-    //   />
-    //   <Route
-    //     path=":id"
-    //     element={
-    //       <PrivateRoute>
-    //         <Chat />
-    //       </PrivateRoute>
-    //     }
-    //   />
-    // </Routes>
+    </>
   );
 };
 

@@ -6,8 +6,9 @@ const NavBar: FC = () => {
   return (
     <div className="flex justify-between items-center my-7">
       <Link to="/" className="flex items-center gap-2">
-        <img className="w-8 h-8" src="/icon.png" alt="" />
-        <span className="text-xl font-medium">FilmHot</span>
+        <i className="fas fa-arrow-left text-xl w-[24px] text-white"></i>
+        <img className="w-8 h-8" src="/vmc_avatar.webp" alt="" />
+        <span className="text-xl font-medium">VMC Social</span>
       </Link>
 
       <Link className="block md:hidden" to="/search">
