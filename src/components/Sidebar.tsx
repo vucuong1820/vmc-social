@@ -142,7 +142,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <div className="flex items-center gap-2">
                 <img
                   className="h-[24px] w-[24px] rounded-full"
-                  src={resizeImage(currentUser.photoURL, '24', '24')}
+                  src={resizeImage(currentUser.photoURL || "", '24', '24')}
                   alt=""
                 />
 
