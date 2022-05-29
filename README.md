@@ -2,12 +2,6 @@
 
 Social media for watching film, chat, post blog
 
-<p align="center">
-  <img alt="Stars" src="https://badgen.net/github/stars/napthedev/filmhot">
-  <img alt="Forks" src="https://badgen.net/github/forks/napthedev/filmhot">
-  <img alt="Issues" src="https://badgen.net/github/issues/napthedev/filmhot">
-  <img alt="Commits" src="https://badgen.net/github/commits/napthedev/filmhot">
-</p>
 
 ## Movie sources
 
