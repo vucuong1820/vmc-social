@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { FC, useCallback, useState } from 'react';
 import { auth } from '../shared/firebase';
@@ -13,10 +13,10 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
   const location = useLocation();
-
+  const navigate = useNavigate()
   const currentUser = useStore((state) => state.currentUser);
   const [displayModal, setDisplayModal] = useState('hidden');
-
+  console.log(currentUser)
   const handleSignOut = () => {
     signOut(auth);
   };
@@ -57,15 +57,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <p className="block sm:hidden xl:block">Home</p>
             </Link>
 
-            <button
-              className={`transitio flex items-center gap-2 text-gray-400 hover:text-gray-300`}
-              type="button"
-              onClick={() => setDisplayModal('block')}
-            >
-              <i className="fas fa-home w-[24px] text-xl"></i>
-              <p className="block sm:hidden xl:block">Modal</p>
-            </button>
-
             <Link
               to="/discovery"
               className={`flex items-center gap-2 transition ${
@@ -91,7 +82,8 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <Link
-              to="/chat-box"
+              onClick={() => {!currentUser && setDisplayModal('block')}}
+              to={currentUser ? "/chat-box" : "/"}
               className={`flex items-center gap-2 transition ${
                 location.pathname === '/history'
                   ? 'border-r-4 border-primary text-primary hover:brightness-125'
@@ -112,6 +104,18 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             >
               <i className="fas fa-history w-[24px] text-xl"></i>
               <p className="block sm:hidden xl:block">History</p>
+            </Link>
+
+            <Link
+              to="/post"
+              className={`flex items-center gap-2 transition ${
+                location.pathname === '/history'
+                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              <i className="far fa-file-alt w-[24px] text-xl"></i>
+              <p className="block sm:hidden xl:block">Blog post</p>
             </Link>
 
             <Link
@@ -142,7 +146,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <div className="flex items-center gap-2">
                 <img
                   className="h-[24px] w-[24px] rounded-full"
-                  src={resizeImage(currentUser.photoURL, '24', '24')}
+                  src={resizeImage(currentUser.photoURL || "", '24', '24')}
                   alt=""
                 />
 
@@ -175,7 +179,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
         <div className="relative top-1/4 left-1/4 h-full w-full max-w-2xl p-4 md:h-auto">
           <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
             <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Terms of Service</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">VMC Chat box</h3>
               <button
                 type="button"
                 className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -192,22 +196,19 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </div>
             <div className="space-y-6 p-6">
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                With less than a month to go before the European Union enacts new consumer privacy laws for its
-                citizens, companies around the world are updating their terms of service agreements to comply.
+                You need to sign in to use this feature
               </p>
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is
-                meant to ensure a common set of data rights in the European Union. It requires organizations to notify
-                users as soon as possible of high-risk data breaches that could personally affect them.
+                Please <span className='text-sky-500 font-bold cursor-pointer underline' onClick={() => navigate("/sign-in")}>sign in</span>
               </p>
             </div>
             <div className="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600">
               <button
-                onClick={() => setDisplayModal('hidden')}
+                onClick={() => {setDisplayModal('hidden'); navigate("/sign-in");}}
                 type="button"
                 className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                I accept
+                Sign In
               </button>
               <button
                 onClick={() => setDisplayModal('hidden')}

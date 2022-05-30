@@ -32,6 +32,10 @@ import { db, storage } from "../../../shared/firebase";
 import { EMOJI_REPLACEMENT } from "../../../shared/constants";
 import { formatFileName } from "../../../shared/utils";
 
+export interface FileListProps {
+  files: File[]
+}
+
 const Picker = lazy(() => import("./EmojiPicker"));
 
 interface InputSectionProps {
@@ -287,7 +291,7 @@ const InputSection: FC<InputSectionProps> = ({
       let items = e.dataTransfer.items;
       let files = e.dataTransfer.files;
 
-      let selectedFiles = [];
+      let selectedFiles: any = [];
 
       for (let i = 0, item; (item = items[i]); ++i) {
         let entry = item.webkitGetAsEntry();

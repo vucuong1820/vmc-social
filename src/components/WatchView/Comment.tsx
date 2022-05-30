@@ -88,7 +88,7 @@ const Comment: FC<CommentProps> = ({ data, episodeIndex }) => {
             >
               <img
                 className="w-[30px] h-[30px] rounded-full absolute top-1/2 -translate-y-1/2 left-[10px]"
-                src={resizeImage(currentUser.photoURL, "30", "30")}
+                src={resizeImage(currentUser.photoURL || "", "30", "30")}
                 alt=""
               />
 
