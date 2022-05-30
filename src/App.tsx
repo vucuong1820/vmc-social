@@ -16,7 +16,10 @@ import { useLocation } from "react-router-dom";
 import { useStore } from "./store";
 import ChatBox from "./pages/ChatBox";
 import { doc, setDoc } from "firebase/firestore";
+import PostList from "./pages/PostList";
 import Chat from "./pages/ChatBox/Chat";
+import PostDetail from "./components/Post/PostDetail";
+import CreatePost from "./components/Post/CreatePost";
 
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
@@ -47,6 +50,9 @@ const App: FC = () => {
     <Routes>
       <Route index element={<Home />} />
       <Route path="movie/:id" element={<Movie />} />
+      <Route path="post" element={<PostList />} />
+      <Route path="post/:id" element={<PostDetail />} />
+      <Route path="post/create" element={<CreatePost />} />
       <Route path="tv/:id" element={<TV />} />
       <Route path="search" element={<Search />} />
       <Route path="explore" element={<Explore />} />

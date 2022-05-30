@@ -4,11 +4,8 @@ import { doc, setDoc } from "firebase/firestore";
 
 import BarWave from "react-cssfx-loading/src/BarWave";
 import { onAuthStateChanged } from "firebase/auth";
-import PrivateRoute from "../components/PrivateRoute";
 import { useStore } from "../store";
 import { auth, db } from "../shared/firebase";
-import Home from "./ChatBox/Home";
-import Chat from "./ChatBox/Chat";
 import SideBar from "../components/ChatBox/Home/Sidebar";
 import Title from "../components/Title";
 
