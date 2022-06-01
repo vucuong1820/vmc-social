@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../components/Title';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
+import { collection, getDocs, onSnapshot, query } from 'firebase/firestore';
+import { db } from '../shared/firebase';
 
 PostList.propTypes = {};
 
 function PostList(props) {
+  const [postsList, setPostsList] = useState([])
+  useEffect(() => {
+    const postsCollectionQuery = query(collection(db, "posts"))
+    const unsubscribe = onSnapshot(postsCollectionQuery, (snapshot) => {
+     
+      let postsDocuments:any = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+      setPostsList(postsDocuments)
+    });
+  return unsubscribe
+  })
   return (
     <>
     
@@ -23,7 +38,7 @@ function PostList(props) {
       <section className="flex w-full flex-col items-center px-3 md:w-full">
        {
          Array.from({length: 4}).map(item => (
-          <article className="my-4 flex flex-col shadow rounded-2xl overflow-hidden">
+          <article className="my-4 flex flex-col shadow rounded-2xl overflow-hidden w-full">
           <a href="#" className="hover:opacity-75">
             <img className='w-full' src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" />
           </a>
