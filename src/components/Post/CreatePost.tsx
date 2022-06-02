@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { Link } from 'react-router-dom';
 import { db } from '../../shared/firebase';
+import { useStore } from '../../store';
 import Title from '../Title';
 CreatePost.propTypes = {};
 
-function CreatePost() {
-  const [convertedText, setConvertedText] = useState('Some default content');
+function CreatePost() { 
   const [profileImg, setProfileImg] = useState('');
+  const currentUser = useStore((state) => state.currentUser);
+  console.log(currentUser)
   const imageHandler = (e: any) => {
     const reader: any = new FileReader();
     reader.onload = () => {
@@ -24,13 +26,18 @@ function CreatePost() {
     e.preventDefault();
     try {
     const data = new FormData(e.target);
-    const formObject = Object.fromEntries(data.entries());
+    const formObject: any = Object.fromEntries(data.entries());
     const formData = new FormData();
     formData.append("file", formObject.img)
     formData.append("upload_preset","vmc_social")
     formData.append("cloud_name","dblyqezyt")
     const response = await axios.post("https://api.cloudinary.com/v1_1/dblyqezyt/image/upload",formData)
     formObject.img = response.data.secure_url
+    formObject.user = {
+      id: currentUser?.uid,
+      displayName: currentUser?.displayName,
+      photoURL: currentUser?.photoURL
+    }
     const dataRef = doc(collection(db, "posts"))
     setDoc(dataRef,{
         ...formObject,
