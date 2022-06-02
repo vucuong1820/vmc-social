@@ -3,11 +3,22 @@ import PropTypes from 'prop-types';
 import Title from '../components/Title';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
-import { collection, getDocs, onSnapshot, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../shared/firebase';
+import { format } from 'date-fns';
+import { formatDateFirebase } from '../shared/utils';
 
 PostList.propTypes = {};
 
+interface PostDetails {
+  category: string;
+  content: string;
+  id: string;
+  img: string;
+  title: string;
+  createdAt: Date;
+  user: any;
+}
 function PostList(props) {
   const [postsList, setPostsList] = useState([])
   useEffect(() => {
@@ -16,12 +27,14 @@ function PostList(props) {
      
       let postsDocuments:any = snapshot.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id
+        id: doc.id,
+        createdAt: new Date(doc.data().createdAt.seconds * 1000 + doc.data().createdAt.nanoseconds/1000000 )
       }));
       setPostsList(postsDocuments)
     });
   return unsubscribe
-  })
+  },[])
+  console.log(postsList)
   return (
     <>
     
@@ -37,59 +50,36 @@ function PostList(props) {
       </Link>
       <section className="flex w-full flex-col items-center px-3 md:w-full">
        {
-         Array.from({length: 4}).map(item => (
-          <article className="my-4 flex flex-col shadow rounded-2xl overflow-hidden w-full">
-          <a href="#" className="hover:opacity-75">
-            <img className='w-full' src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" />
-          </a>
+         postsList.length > 0 && 
+         postsList.map((post: PostDetails) => (
+          <article key={post.id} className="my-4 flex flex-col shadow rounded-2xl overflow-hidden w-full">
+          <div className="hover:opacity-75">
+            <img className='w-full' src={post.img} />
+          </div>
           <div className="flex flex-col justify-start bg-dark-lighten p-8 group-hover:text-primary">
-            <a href="#" className="pb-4 text-sm font-bold uppercase text-blue-700">
-              Technology
-            </a>
-            <a href="#" className="">
-              Lorem Ipsum Dolor Sit Amet Dolor Sit Amet
-            </a>
-            <a href="#" className="mt-1 mb-5 text-sm italic opacity-60">
-              By{' '}
-              <a href="#" className="">
-                David Grzyb
-              </a>
-              , Published on April 25th, 2020
-            </a>
-            <a href="#" className="pb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta dui. Ut eu iaculis massa. Sed
-              ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet posuere magna..
-            </a>
-            <Link to="/post/123" className="uppercase ">
+            <div  className="pb-4 text-sm font-bold uppercase text-blue-700">
+              {post.category}
+            </div>
+            <div  className="">
+              {post.title}
+            </div>
+            <div className="flex mt-1 mb-5 text-sm italic opacity-60">
+              By
+              <div className="ml-1">
+                {post.user.displayName}
+              </div>
+              , Published on {formatDateFirebase(post.createdAt)}
+            </div>
+            <div  className="pb-6">
+              {post.content}
+            </div>
+            <Link to={`/post/${post.id}`} className="uppercase ">
               Continue Reading <i className="fas fa-arrow-right"></i>
             </Link>
           </div>
         </article>
          ))
        }
-
-        
-
-        <div className="flex items-center py-8">
-          <a
-            href="#"
-            className="flex h-10 w-10 items-center justify-center bg-blue-800 text-sm font-semibold text-white hover:bg-blue-600"
-          >
-            1
-          </a>
-          <a
-            href="#"
-            className="flex h-10 w-10 items-center justify-center text-sm font-semibold text-gray-800 hover:bg-blue-600 hover:text-white"
-          >
-            2
-          </a>
-          <a
-            href="#"
-            className="ml-3 flex h-10 w-10 items-center justify-center text-sm font-semibold text-gray-800 hover:text-gray-900"
-          >
-            Next <i className="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
       </section>
 
     </div>

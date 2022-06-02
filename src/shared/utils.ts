@@ -35,6 +35,7 @@ export const calculateCreatedTime = (timeCreated: number) => {
   return "Just now";
 };
 
+import { format, formatRelative } from "date-fns";
 import dayjs from "dayjs";
 // @ts-ignore
 import kebabCase from "lodash.kebabcase";
@@ -97,3 +98,7 @@ export const splitLinkFromMessage = (message: string) => {
 
   return result;
 };
+
+export const formatDateFirebase = (date) => {
+    return format(date, "PPP")
+}
