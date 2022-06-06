@@ -2,38 +2,60 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../Title';
 import NavBar from '../NavBar';
-import { useParams } from 'react-router-dom';
-import { CollectionReference, doc, getDoc } from 'firebase/firestore';
+import { Link, useParams } from 'react-router-dom';
 import { db } from '../../shared/firebase';
-import { formatDateFirebase } from '../../shared/utils';
+import { formatDateFirebase, htmlToText } from '../../shared/utils';
+import { doc, getDoc } from 'firebase/firestore';
+import { searchKeywords, searchWithKeyword } from '../../services/search';
+import useSWR from 'swr';
 
 PostDetail.propTypes = {};
 
 function PostDetail(props) {
-  const { id } = useParams()
-  const [postDetails, setPostDetails] = useState<any>({})
+  const { id } = useParams();
+  const [postDetails, setPostDetails] = useState<any>({});
+  const [relatedList, setRelatedList] = useState<any>([]);
   useEffect(() => {
     (async () => {
       // @ts-ignore
-      const postSnap = await getDoc(doc<CollectionReference>(db, "posts", id))
+      const postSnap = await getDoc(doc(db, 'posts', id));
       if (postSnap.exists()) {
         setPostDetails({
           ...postSnap.data(),
-          createdAt: new Date(postSnap.data().createdAt.seconds * 1000 + postSnap.data().createdAt.nanoseconds/1000000 )
-        })
+          createdAt: new Date(
+            postSnap.data().createdAt.seconds * 1000 + postSnap.data().createdAt.nanoseconds / 1000000
+          ),
+        });
       }
-    })()
-  }, [])
-  return ( 
+    })();
+  }, []);
+  useEffect(() => {
+      (async () => {
+        if(postDetails?.title){
+          const data = await searchWithKeyword(postDetails?.title);
+          setRelatedList(data.slice(0,3).map(movie => ({img: movie.coverHorizontalUrl, id: movie.id, name: movie.name})))
+        }
+      })()
+  }, [postDetails])
+  console.log(relatedList)
+  return (
     <>
       <Title value="Explore - VMC Social" />
       <div className="mx-[7vw] flex min-h-screen flex-col items-stretch">
-        <NavBar />
+        <div className="my-7 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link to="/post">
+              <i className="fas fa-arrow-left w-[24px] text-xl text-white"></i>
+            </Link>
+            <img className="h-8 w-8" src="/vmc_avatar.webp" />
+            <span className="text-xl font-medium">Create new post</span>
+          </div>
+        </div>
         <div className="container mx-auto flex flex-wrap py-6 ">
           <section className="flex w-full flex-col items-center px-3 md:w-9/12">
-            <article className="my-4 flex flex-col overflow-hidden rounded-2xl shadow ">
+            <article className="w-full my-4 flex flex-col overflow-hidden rounded-2xl shadow ">
               <a href="#" className="">
-                <img className="w-full" src="https://source.unsplash.com/collection/1346951/1000x500?sig=1" />
+                <img className="w-full" src={postDetails?.img || ''} />
               </a>
               <div className="flex flex-col justify-start bg-dark-lighten p-8">
                 <a href="#" className="pb-4 text-sm font-bold uppercase text-blue-700">
@@ -45,40 +67,33 @@ function PostDetail(props) {
                 <a href="#" className="pb-8 text-sm italic opacity-60">
                   By{' '}
                   <a href="#" className="font-semibold ">
-                    {postDetails?.user?.displayName || ""}
+                    {postDetails?.user?.displayName || ''}
                   </a>
-                  , Published on {formatDateFirebase(new Date(postDetails?.createdAt))}
+                  , Published on{' '}
+                  {Object.keys(postDetails).length > 0 && formatDateFirebase(new Date(postDetails?.createdAt))}
                 </a>
                 <h1 className="pb-3 text-2xl font-bold">Introduction</h1>
-                <p className="pb-3">
-                  {postDetails?.content}
-                </p>
-                
-                
-               
-                
+                <p className="pb-3">{postDetails?.content}</p>
               </div>
             </article>
           </section>
           <aside className="flex w-full flex-col items-center px-3 md:w-3/12">
-
-          <div className="my-4 flex w-full flex-col bg-dark-lighten p-6 shadow rounded-xl">
-            <div className="grid grid-cols-1">
-              <img className="hover:opacity-75 rounded-md w-full mb-3" src="https://source.unsplash.com/collection/1346951/150x150?sig=1" />
-              <img className="hover:opacity-75 rounded-md w-full mb-3" src="https://source.unsplash.com/collection/1346951/150x150?sig=1" />
-              <img className="hover:opacity-75 rounded-md w-full mb-3" src="https://source.unsplash.com/collection/1346951/150x150?sig=1" />
-              
+            <div className="my-4 flex w-full flex-col bg-dark-lighten p-6 shadow rounded-xl">
+              <div className="grid grid-cols-1">
+                {relatedList.length > 0 &&
+                  relatedList.map((movie: any) => (
+                    <img key={movie.id} className="hover:opacity-75 rounded-md w-full mb-3" src={movie.img} />
+                  ))}
+              </div>
+              <a
+                href="#"
+                className="mt-6 flex w-full items-center justify-center rounded-md bg-blue-800 px-2 py-3 text-sm font-bold uppercase text-white hover:bg-blue-700"
+              >
+                <i className="fas fa-film w-[24px] text-xl mr-2"></i> Related movie
+              </a>
             </div>
-            <a
-              href="#"
-              className="mt-6 flex w-full items-center justify-center rounded-md bg-blue-800 px-2 py-3 text-sm font-bold uppercase text-white hover:bg-blue-700"
-            >
-              <i className="fas fa-film w-[24px] text-xl mr-2"></i> Related movie
-            </a>
-          </div>
-        </aside>
+          </aside>
         </div>
-        
       </div>
     </>
   );
