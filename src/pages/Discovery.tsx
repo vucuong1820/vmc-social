@@ -83,7 +83,7 @@ const Discovery: FC = () => {
                       </p>
 
                       <p>{item.introduction}</p>
-
+                  {/* @ts-ignore */}
                       <InView threshold={0.5}>
                         {({ ref, inView }) => (
                           <div ref={ref} className="h-0 relative pb-[100%]">

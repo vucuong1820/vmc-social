@@ -2478,6 +2478,11 @@ semver@^6.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
+sendbird-calls@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/sendbird-calls/-/sendbird-calls-1.9.3.tgz#0dbd32c4c0f36119a2cc9b6e2e96c6a08054263f"
+  integrity sha512-D+oenFER+Un0O1IJyCoCY43RDGCI5nBEG//BL8aP/VmIET6MNkII4pFsAOkmzu7T5/mkNdku6k0I/6KNhUtrEw==
+
 setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"

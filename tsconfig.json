@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
     "noImplicitAny": false,
     "strictNullChecks": true,
+    "checkJs": false
   },
   "include": ["./src"]
 }

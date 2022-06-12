@@ -32,7 +32,7 @@ function PostDetail(props) {
   useEffect(() => {
       (async () => {
         if(postDetails?.title){
-          const data = await searchWithKeyword(postDetails?.title);
+          const data = await searchWithKeyword(postDetails?.category);
           setRelatedList(data.slice(0,3).map(movie => ({img: movie.coverHorizontalUrl, id: movie.id, name: movie.name})))
         }
       })()

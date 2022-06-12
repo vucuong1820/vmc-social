@@ -11,6 +11,7 @@ const Info: FC = () => {
   const { data, error } = useSWR(`movie-${id}`, () =>
     getMovieDetail(id as string)
   );
+  console.log(data)
 
   if (error) return <Error />;
 

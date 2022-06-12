@@ -26,6 +26,7 @@
     "react-quill": "^1.3.5",
     "react-router-dom": "^6.2.1",
     "react-tuby": "^0.1.21",
+    "sendbird-calls": "^1.9.3",
     "swiper": "^7.4.1",
     "swr": "^1.1.2",
     "zustand": "^3.6.8"
