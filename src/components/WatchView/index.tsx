@@ -99,7 +99,7 @@ const WatchView: FC<WatchViewProps> = ({
                       <HlsPlayer
                         playerRef={ref}
                         {...props}
-                        src={`${PROXY}${props.src}`}
+                        src={`${props.src}`}
                       />
                     )}
                   </Player>

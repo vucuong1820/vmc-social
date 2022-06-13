@@ -119,6 +119,18 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <Link
+              to="/voice-call"
+              className={`flex items-center gap-2 transition ${
+                location.pathname === '/history'
+                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              <i className="fas fa-microphone-alt w-[24px] text-xl"></i>
+              <p className="block sm:hidden xl:block">Voice call</p>
+            </Link>
+
+            <Link
               to="/search"
               className={`flex items-center gap-2 transition md:!hidden ${
                 location.pathname === '/search'
