@@ -20,8 +20,7 @@ import PostList from "./pages/PostList";
 import Chat from "./pages/ChatBox/Chat";
 import PostDetail from "./components/Post/PostDetail";
 import CreatePost from "./components/Post/CreatePost";
-import axios from "axios";
-import DirectCall from "./pages/DirectCall";
+import VoiceCall from "./pages/VoiceCall";
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const location = useLocation();
@@ -63,7 +62,7 @@ const App: FC = () => {
       <Route path="discovery" element={<Discovery />} />
       <Route path="chat-box" element={<ChatBox />} />
       <Route path="chat-box/:id" element={<Chat />} />
-      <Route path="direct-call" element={<DirectCall />} />
+      <Route path="voice-call" element={<VoiceCall />} />
     </Routes>
   );
 };

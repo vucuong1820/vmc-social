@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { useStore } from "../store";
 
-const PrivateRoute: FC = ({ children }) => {
+const PrivateRoute: FC = ({ children }: any) => {
   const currentUser = useStore((state) => state.currentUser);
   const location = useLocation();
 
