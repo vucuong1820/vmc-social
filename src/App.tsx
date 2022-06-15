@@ -21,6 +21,7 @@ import Chat from "./pages/ChatBox/Chat";
 import PostDetail from "./components/Post/PostDetail";
 import CreatePost from "./components/Post/CreatePost";
 import VoiceCall from "./pages/VoiceCall";
+import PrivateRoute from "./components/PrivateRoute";
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const location = useLocation();
@@ -50,9 +51,14 @@ const App: FC = () => {
     <Routes>
       <Route index element={<Home />} />
       <Route path="movie/:id" element={<Movie />} />
-      <Route path="post" element={<PostList />} />
-      <Route path="post/:id" element={<PostDetail />} />
-      <Route path="post/create" element={<CreatePost />} />
+      <Route path="post" element={<PrivateRoute/>}>
+        <Route path="post" element={<PostList/>}/>
+      </Route>
+      <Route path="post/*" element={<PrivateRoute/>}>
+        <Route path="post" element={<PostList/>}/>
+        <Route path="post/:id" element={<PostDetail />} />
+        <Route path="post/create" element={<CreatePost />} />
+      </Route>
       <Route path="tv/:id" element={<TV />} />
       <Route path="search" element={<Search />} />
       <Route path="explore" element={<Explore />} />
@@ -60,8 +66,10 @@ const App: FC = () => {
       <Route path="history" element={<History />} />
       <Route path="category/:id" element={<Category />} />
       <Route path="discovery" element={<Discovery />} />
-      <Route path="chat-box" element={<ChatBox />} />
-      <Route path="chat-box/:id" element={<Chat />} />
+      <Route path="chat-box/*" element={<PrivateRoute/>}>
+        <Route path="chat-box" element={<ChatBox />} />
+        <Route path="chat-box/:id" element={<Chat />} />
+      </Route>
       <Route path="voice-call" element={<VoiceCall />} />
     </Routes>
   );
