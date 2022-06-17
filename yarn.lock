@@ -1086,10 +1086,27 @@ acorn@^7.0.0:
   dependencies:
     agora-rtc-sdk-ng "^4.3.0"
 
+agora-rtc-sdk-ng@^4.12.0:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/agora-rtc-sdk-ng/-/agora-rtc-sdk-ng-4.12.0.tgz#98dd31771c875709c5bb63770edf2f5bf82378c2"
+  integrity sha512-lKL6PTw6PPzIX52Eq7Awq+oQdZR5y2DnA9RIpD+Gv+Srr5JsrCbh7eA+9KrOnncEPGOlraz/Phx3GZuGyFAMPA==
+  dependencies:
+    agora-rte-extension "^1.0.22"
+
 agora-rtc-sdk-ng@^4.3.0:
   version "4.5.0"
   resolved "https://registry.npmjs.org/agora-rtc-sdk-ng/-/agora-rtc-sdk-ng-4.5.0.tgz"
   integrity sha512-A93m5xkPkqnCx4J768FSj6mcgeaKkDCDUJVi+nnOSANlJ9GN75Bn6SleNwkbEB47PuecBnWqNBwrzuII2fDIkw==
+
+agora-rtc-sdk@^3.6.10:
+  version "3.6.10"
+  resolved "https://registry.yarnpkg.com/agora-rtc-sdk/-/agora-rtc-sdk-3.6.10.tgz#1ef2e3a2123f0cc349d8978a21205fa720054151"
+  integrity sha512-F9BIrQtEbuKAqyo72JHoC3TYnN+oyth1Zj7TOM3lFCbdl4Q4M6AG5II2Ln4thIkrYwFT/GAtrT29LAkKG+Xi/g==
+
+agora-rte-extension@^1.0.22:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/agora-rte-extension/-/agora-rte-extension-1.0.23.tgz#54a7215fd2cdcf2553d83570530950054f1e59a6"
+  integrity sha512-X2cGBg+L5ZJIFU91qvMASvRsBfg1HXTktVG3YROw9wxHsILSI7jgF9R9XraLc3fNX/UjovaYAlUW+hiJe0v6Xw==
 
 ansi-regex@^5.0.1:
   version "5.0.1"

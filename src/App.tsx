@@ -70,7 +70,9 @@ const App: FC = () => {
         <Route path="chat-box" element={<ChatBox />} />
         <Route path="chat-box/:id" element={<Chat />} />
       </Route>
-      <Route path="voice-call" element={<VoiceCall />} />
+      <Route path="voice-call" element={<PrivateRoute/>}>
+        <Route path="voice-call" element={<VoiceCall />} />
+      </Route>
     </Routes>
   );
 };
