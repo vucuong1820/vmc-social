@@ -6,6 +6,7 @@ import { resizeImage } from '../shared/constants';
 import { signOut } from 'firebase/auth';
 import { useStore } from '../store';
 import Modal from './Modal';
+import FormModal from './FormModal';
 
 interface SidebarProps {
   sidebarActive: boolean;
@@ -17,6 +18,8 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
   const navigate = useNavigate()
   const currentUser = useStore((state) => state.currentUser);
   const [displayModal, setDisplayModal] = useState('hidden');
+  const [displayFormModal, setDisplayFormModal] = useState('hidden');
+  console.log({displayFormModal})
   console.log(currentUser)
   const handleSignOut = () => {
     signOut(auth);
@@ -119,8 +122,9 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <p className="block sm:hidden xl:block">Blog post</p>
             </Link>
 
-            <Link
-              to="/voice-call"
+            <button
+              // to="/voice-call"
+              onClick={() => setDisplayFormModal("flex")}
               className={`flex items-center gap-2 transition ${
                 location.pathname === '/history'
                   ? 'border-r-4 border-primary text-primary hover:brightness-125'
@@ -129,7 +133,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             >
               <i className="fas fa-microphone-alt w-[24px] text-xl"></i>
               <p className="block sm:hidden xl:block">Voice call</p>
-            </Link>
+            </button>
 
             <Link
               to="/search"
@@ -187,6 +191,10 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
         title="VMC Chat box"
         displayModal={displayModal}
         onSetDisplayModal={setDisplayModal}
+      />
+      <FormModal 
+      displayModal={displayFormModal}
+      onSetDisplayModal={(display) => setDisplayFormModal(display)}
       />
     </>
   );
