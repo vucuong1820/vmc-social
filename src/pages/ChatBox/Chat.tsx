@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { doc } from "firebase/firestore";
 import { db } from "../../shared/firebase";
 import { useDocumentQuery } from "../../hooks/useDocumentQuery";
@@ -12,6 +12,9 @@ import ChatHeader from "../../components/ChatBox/Chat/ChatHeader";
 import InputSection from "../../components/ChatBox/Input/InputSection";
 
 const Chat: FC = () => {
+  const currentUser = useStore((state) => state.currentUser);
+  if(!currentUser) return <Navigate to="/" />
+
   const { id } = useParams();
 
   const { data, loading, error } = useDocumentQuery(
@@ -21,7 +24,6 @@ const Chat: FC = () => {
 
   const conversation = data?.data() as ConversationInfo;
 
-  const currentUser = useStore((state) => state.currentUser);
 
   const [inputSectionOffset, setInputSectionOffset] = useState(0);
 

@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../Title';
 import NavBar from '../NavBar';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { db } from '../../shared/firebase';
 import { formatDateFirebase, htmlToText } from '../../shared/utils';
 import { doc, getDoc } from 'firebase/firestore';
 import { searchKeywords, searchWithKeyword } from '../../services/search';
 import useSWR from 'swr';
+import { useStore } from '../../store';
 
 PostDetail.propTypes = {};
 
 function PostDetail(props) {
+  const currentUser = useStore((state) => state.currentUser);
+  if(!currentUser) return <Navigate to="/" />
   const { id } = useParams();
   const [postDetails, setPostDetails] = useState<any>({});
   const [relatedList, setRelatedList] = useState<any>([]);

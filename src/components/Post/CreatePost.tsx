@@ -2,7 +2,7 @@ import axios from 'axios';
 import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { searchKeywords } from '../../services/search';
 import { db } from '../../shared/firebase';
 import { htmlToText } from '../../shared/utils';
@@ -12,10 +12,11 @@ import debounce from 'lodash.debounce'
 CreatePost.propTypes = {};
 
 function CreatePost() {
+  const currentUser = useStore((state) => state.currentUser);
+  if(!currentUser) return <Navigate to="/" />
   const [profileImg, setProfileImg] = useState('');
   const [categoryValue, setCategoryValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const currentUser = useStore((state) => state.currentUser);
   const imageHandler = (e: any) => {
     const reader: any = new FileReader();
     reader.onload = () => {

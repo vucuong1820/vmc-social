@@ -14,6 +14,7 @@ import { getHome } from "../services/home";
 import { resizeImage } from "../shared/constants";
 import useSWRInfinite from "swr/infinite";
 import { useStore } from "../store";
+import Toast from "../components/Toast";
 
 const Home: FC = () => {
   const getKey = (index: number) => `home-${index || 0}`;
