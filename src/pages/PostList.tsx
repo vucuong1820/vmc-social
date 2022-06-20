@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../components/Title';
 import NavBar from '../components/NavBar';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { collection, deleteDoc, doc, getDocs, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../shared/firebase';
 import { format } from 'date-fns';
 import { formatDateFirebase } from '../shared/utils';
+import { useStore } from '../store';
 
 PostList.propTypes = {};
 
@@ -20,6 +21,9 @@ interface PostDetails {
   user: any;
 }
 function PostList(props) {
+  const currentUser = useStore((state) => state.currentUser);
+  if(!currentUser) return <Navigate to="/"/>
+
   const [postsList, setPostsList] = useState([]);
   useEffect(() => {
     const postsCollectionQuery = query(collection(db, 'posts'));

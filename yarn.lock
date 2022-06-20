@@ -1080,11 +1080,13 @@ acorn@^7.0.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-"agora-rtc-react@git://github.com/AgoraIO-Community/agora-rtc-react.git#v1.0.1":
-  version "1.0.1"
-  resolved "git+ssh://git@github.com/AgoraIO-Community/agora-rtc-react.git#3fe3c8048e5f6d37d56205e7dd7dd90e8dc49a98"
+agora-access-token@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/agora-access-token/-/agora-access-token-2.0.4.tgz#6a6d5996011f6000035d923342296c2594d94f82"
+  integrity sha512-RtOIvi4PqV1ok3rdnopMZeVwiUqZgG9Pp56kqxJc5cU/+ljRBzs1Al+IThD5ahm528dGsdY1TyP1bJdqmgBCbQ==
   dependencies:
-    agora-rtc-sdk-ng "^4.3.0"
+    crc-32 "1.2.0"
+    cuint "0.2.2"
 
 agora-rtc-sdk-ng@^4.12.0:
   version "4.12.0"
@@ -1092,16 +1094,6 @@ agora-rtc-sdk-ng@^4.12.0:
   integrity sha512-lKL6PTw6PPzIX52Eq7Awq+oQdZR5y2DnA9RIpD+Gv+Srr5JsrCbh7eA+9KrOnncEPGOlraz/Phx3GZuGyFAMPA==
   dependencies:
     agora-rte-extension "^1.0.22"
-
-agora-rtc-sdk-ng@^4.3.0:
-  version "4.5.0"
-  resolved "https://registry.npmjs.org/agora-rtc-sdk-ng/-/agora-rtc-sdk-ng-4.5.0.tgz"
-  integrity sha512-A93m5xkPkqnCx4J768FSj6mcgeaKkDCDUJVi+nnOSANlJ9GN75Bn6SleNwkbEB47PuecBnWqNBwrzuII2fDIkw==
-
-agora-rtc-sdk@^3.6.10:
-  version "3.6.10"
-  resolved "https://registry.yarnpkg.com/agora-rtc-sdk/-/agora-rtc-sdk-3.6.10.tgz#1ef2e3a2123f0cc349d8978a21205fa720054151"
-  integrity sha512-F9BIrQtEbuKAqyo72JHoC3TYnN+oyth1Zj7TOM3lFCbdl4Q4M6AG5II2Ln4thIkrYwFT/GAtrT29LAkKG+Xi/g==
 
 agora-rte-extension@^1.0.22:
   version "1.0.23"
@@ -1333,6 +1325,14 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
+crc-32@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.0.tgz#cb2db6e29b88508e32d9dd0ec1693e7b41a18208"
+  integrity sha512-1uBwHxF+Y/4yF5G48fwnKq6QsIXheor3ZLPT80yGBV1oEUwpPojlEhQbWKVw1VwcTQyMGHK1/XMmTjmlsmTTGA==
+  dependencies:
+    exit-on-epipe "~1.0.1"
+    printj "~1.1.0"
+
 create-react-class@^15.6.0:
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"
@@ -1363,6 +1363,11 @@ csstype@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.0.tgz#4ddcac3718d787cf9df0d1b7d15033925c8f29f2"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
+
+cuint@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/cuint/-/cuint-0.2.2.tgz#408086d409550c2631155619e9fa7bcadc3b991b"
+  integrity sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==
 
 d@1, d@^1.0.1:
   version "1.0.1"
@@ -1694,6 +1699,11 @@ eventemitter3@^4.0.3:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+
+exit-on-epipe@~1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/exit-on-epipe/-/exit-on-epipe-1.0.1.tgz#0bdd92e87d5285d267daa8171d0eb06159689692"
+  integrity sha512-h2z5mrROTxce56S+pnvAV890uu7ls7f1kEvVGJbw1OlFH3/mlJ5bkXu0KRyW94v37zzHPiUd55iLn3DA7TjWpw==
 
 ext@^1.1.2:
   version "1.6.0"
@@ -2407,6 +2417,11 @@ prettier-plugin-tailwindcss@^0.1.5:
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.1.11.tgz#6112da68d9d022b7f896d35c070464931c99c35f"
   integrity sha512-a28+1jvpIZQdZ/W97wOXb6VqI762MKE/TxMMuibMEHhyYsSxQA8Ek30KObd5kJI2HF1ldtSYprFayXJXi3pz8Q==
+
+printj@~1.1.0:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/printj/-/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
+  integrity sha512-zA2SmoLaxZyArQTOPj5LXecR+RagfPSU5Kw1qP+jkWeNlrq+eJZyY2oS68SU1Z/7/myXM4lo9716laOFAVStCQ==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

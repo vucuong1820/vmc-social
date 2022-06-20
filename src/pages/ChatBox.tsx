@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 
 import BarWave from "react-cssfx-loading/src/BarWave";
@@ -11,6 +11,7 @@ import Title from "../components/Title";
 
 const ChatBox: FC = () => {
   const currentUser = useStore((state) => state.currentUser);
+  if(!currentUser) return <Navigate to="/" />
   const setCurrentUser = useStore((state) => state.setCurrentUser);
 
   useEffect(() => {

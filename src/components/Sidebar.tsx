@@ -1,6 +1,6 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { auth } from '../shared/firebase';
 import { resizeImage } from '../shared/constants';
 import { signOut } from 'firebase/auth';
@@ -15,24 +15,17 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
   const location = useLocation();
-  const navigate = useNavigate()
   const currentUser = useStore((state) => state.currentUser);
   const [displayModal, setDisplayModal] = useState('hidden');
   const [displayFormModal, setDisplayFormModal] = useState('hidden');
-  console.log({displayFormModal})
-  console.log(currentUser)
   const handleSignOut = () => {
     signOut(auth);
   };
-  const toggleModal = useCallback(() => {
-    if (displayModal === 'hidden') {
-      setDisplayModal('block');
-    }
-    if (displayModal === 'block') {
-      setDisplayModal('hidden');
-    }
-  }, []);
-  console.log(displayModal);
+
+  useEffect(() => {
+  console.log('mount')
+  }, [])
+  console.log({displayModal})
   return (
     <>
       <div
@@ -111,7 +104,8 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <Link
-              to="/post"
+              onClick={() => {!currentUser && setDisplayModal('block')}}
+              to={currentUser ? "/post" : "/"}
               className={`flex items-center gap-2 transition ${
                 location.pathname === '/history'
                   ? 'border-r-4 border-primary text-primary hover:brightness-125'
@@ -123,8 +117,13 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <button
-              // to="/voice-call"
-              onClick={() => setDisplayFormModal("flex")}
+              onClick={() => {
+                if(!currentUser){
+                  setDisplayModal('block')
+                }else {
+                  setDisplayFormModal("flex")
+                }
+              }}
               className={`flex items-center gap-2 transition ${
                 location.pathname === '/history'
                   ? 'border-r-4 border-primary text-primary hover:brightness-125'
