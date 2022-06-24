@@ -39,7 +39,7 @@ const SignIn: FC = () => {
 
   return (
     <>
-      <Title value="Sign In - FilmHot" />
+      <Title value="Sign In - VMC Social" />
       <div className="min-h-screen w-screen bg-[url('/bg.png')] bg-no-repeat bg-cover bg-center">
         <div className="w-full min-h-screen flex justify-center items-center bg-[#00000056]">
           <div className="w-[90vw] max-w-[350px] bg-black p-10 flex flex-col items-center gap-6 rounded-xl">

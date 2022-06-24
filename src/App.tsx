@@ -22,6 +22,8 @@ import PostDetail from "./components/Post/PostDetail";
 import CreatePost from "./components/Post/CreatePost";
 import VoiceCall from "./pages/VoiceCall";
 import PrivateRoute from "./components/PrivateRoute";
+import Profile from "./pages/Profile";
+import WatchTogether from "./pages/WatchTogether";
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const location = useLocation();
@@ -64,6 +66,8 @@ const App: FC = () => {
       <Route path="chat-box" element={<ChatBox />} />
       <Route path="chat-box/:id" element={<Chat />} />
       <Route path="voice-call" element={<VoiceCall />} />
+      <Route path="profile" element={<Profile />} />
+      <Route path="watch-together" element={<WatchTogether />} />
     </Routes>
   );
 };

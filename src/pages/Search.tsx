@@ -13,7 +13,7 @@ const Search: FC = () => {
   if (!query?.trim())
     return (
       <>
-        <Title value="Search - FilmHot" />
+        <Title value="Search - VMC Social" />
         <div className="flex justify-center my-[100px] mx-6">
           <div className="w-full max-w-[400px] flex flex-col items-center gap-4">
             <div className="flex flex-col items-stretch gap-3">
@@ -32,7 +32,7 @@ const Search: FC = () => {
 
   return (
     <>
-      <Title value={`Search for ${query} - FilmHot`} />
+      <Title value={`Search for ${query} - VMC Social`} />
       <div className="flex flex-col items-stretch mx-[7vw] mb-8">
         <NavBar />
         <div>

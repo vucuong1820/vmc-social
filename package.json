@@ -20,6 +20,7 @@
     "firebase": "^9.6.1",
     "lodash": "^4.17.21",
     "lodash.kebabcase": "^4.1.1",
+    "peerjs": "^1.4.6",
     "react": "^17.0.2",
     "react-chat-engine": "^1.11.22",
     "react-cssfx-loading": "^1.1.1",

@@ -28,7 +28,7 @@ const CategoryResult: FC<CategoryResultProps> = ({ id, categoryName }) => {
 
   return (
     <>
-      <Title value={`Category ${categoryName} - FilmHot`} />
+      <Title value={`Category ${categoryName} - VMC Social`} />
       <InfiniteScroll
         dataLength={data?.length || 0}
         next={() => setSize((size) => size + 1)}

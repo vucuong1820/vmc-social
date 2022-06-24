@@ -112,7 +112,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
                   : 'text-gray-400 hover:text-gray-300'
               }`}
             >
-              <i className="far fa-file-alt w-[24px] text-xl"></i>
+              <i className="far fa-file-alt w-[24px] text-xl text-center"></i>
               <p className="block sm:hidden xl:block">Blog post</p>
             </Link>
 
@@ -130,9 +130,22 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
                   : 'text-gray-400 hover:text-gray-300'
               }`}
             >
-              <i className="fas fa-microphone-alt w-[24px] text-xl"></i>
+              <i className="fas fa-microphone-alt w-[24px] text-xl text-center"></i>
               <p className="block sm:hidden xl:block">Voice call</p>
             </button>
+            
+            <Link
+              // onClick={() => {!currentUser && setDisplayModal('block')}}   
+              to="/watch-together"
+              className={`flex items-center gap-2 transition ${
+                location.pathname === '/history'
+                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              <i className="fas fa-people-arrows w-[24px] text-xl text-center"></i>
+              <p className="block sm:hidden xl:block">Watch together</p>
+            </Link>
 
             <Link
               to="/search"
@@ -159,7 +172,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
           ) : (
             <div className="flex flex-col items-stretch gap-3">
-              <div className="flex items-center gap-2">
+              <Link to="/profile" className="flex items-center gap-2">
                 <img
                   className="h-[24px] w-[24px] rounded-full"
                   src={resizeImage(currentUser.photoURL || "", '24', '24')}
@@ -167,7 +180,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
                 />
 
                 <p className="block text-gray-400 sm:hidden xl:block">{currentUser.displayName}</p>
-              </div>
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="flex cursor-pointer items-center gap-2 text-gray-400 transition hover:text-gray-300"
