@@ -24,9 +24,11 @@ import VoiceCall from "./pages/VoiceCall";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import WatchTogether from "./pages/WatchTogether";
+import Party from "./components/WatchTogether/Party";
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const location = useLocation();
+  console.log("globathisobj:",window["global_this_obj"])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -68,6 +70,8 @@ const App: FC = () => {
       <Route path="voice-call" element={<VoiceCall />} />
       <Route path="profile" element={<Profile />} />
       <Route path="watch-together" element={<WatchTogether />} />
+      <Route path="party/:host_id" element={<Party />} />
+
     </Routes>
   );
 };
