@@ -25,10 +25,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import WatchTogether from "./pages/WatchTogether";
 import Party from "./components/WatchTogether/Party";
+import WatchTogether2 from "./pages/WatchTogether2";
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
   const location = useLocation();
-  console.log("globathisobj:",window["global_this_obj"])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -69,7 +69,8 @@ const App: FC = () => {
       <Route path="chat-box/:id" element={<Chat />} />
       <Route path="voice-call" element={<VoiceCall />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="watch-together" element={<WatchTogether />} />
+      <Route path="watch-together/:id" element={<WatchTogether />} />
+      <Route path="watch-together-2" element={<WatchTogether2 />} />
       <Route path="party/:host_id" element={<Party />} />
 
     </Routes>

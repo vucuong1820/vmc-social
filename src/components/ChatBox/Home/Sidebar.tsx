@@ -22,7 +22,6 @@ const SideBar: FC = () => {
   const [createConversationOpened, setCreateConversationOpened] =
     useState(false);
   const [isUserInfoOpened, setIsUserInfoOpened] = useState(false);
-  console.log(currentUser)
   const { data, error, loading } = useCollectionQuery(
     "conversations",
     query(

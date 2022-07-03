@@ -10,6 +10,7 @@ import { Player } from "react-tuby";
 import Similar from "./Similar";
 import Skeleton from "../Skeleton";
 import Title from "../Title";
+import { Link } from "react-router-dom";
 
 interface WatchViewProps {
   data?: DetailType;
@@ -35,6 +36,8 @@ const WatchView: FC<WatchViewProps> = ({
   subtitles,
   episodeIndex,
 }) => {
+  console.log(sources)
+  console.log(subtitles)
   const mediaType = typeof episodeIndex === "undefined" ? "movie" : "tv";
   const playerKey = `${mediaType}-${data?.id}${
     episodeIndex ? `-${episodeIndex}` : ""
@@ -64,7 +67,6 @@ const WatchView: FC<WatchViewProps> = ({
 
     localStorage.setItem("filmhot-recent", JSON.stringify(existing));
   }, [data]);
-
   return (
     <>
       {data && (
@@ -95,13 +97,15 @@ const WatchView: FC<WatchViewProps> = ({
                       })) || []
                     }
                   >
-                    {(ref, props) => (
-                      <HlsPlayer
-                        playerRef={ref}
-                        {...props}
-                        src={`${props.src}`}
-                      />
-                    )}
+                    {(ref, props) => {
+                      return (
+                        <HlsPlayer
+                          playerRef={ref}
+                          {...props}
+                          src={`${props.src}`}
+                        />
+                      )
+                    }}
                   </Player>
                 ) : (
                   <div className="w-full h-0 pb-[56.25%] relative">
@@ -109,7 +113,18 @@ const WatchView: FC<WatchViewProps> = ({
                   </div>
                 )}
               </div>
-
+              
+              <Link
+              to={`/watch-together/${data?.id}`}
+              className={`mt-4 flex items-center gap-2 transition ${
+                location.pathname === '/history'
+                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              <i className="fas fa-people-arrows w-[24px] text-xl text-center"></i>
+              <p className="block sm:hidden xl:block">Watch together</p>
+            </Link>
               <MetaData data={data} episodeIndex={episodeIndex} />
 
               {data && <Comment data={data} episodeIndex={episodeIndex} />}

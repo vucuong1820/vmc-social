@@ -29,7 +29,7 @@ const SelectConversation: FC<SelectConversationProps> = ({
     loading: lastMessageLoading,
     error: lastMessageError,
   } = useLastMessage(conversationId);
-
+  console.log({conversationId})
   if (loading)
     return (
       <div className="flex items-stretch gap-2 py-2 px-5">
@@ -40,6 +40,8 @@ const SelectConversation: FC<SelectConversationProps> = ({
         </div>
       </div>
     );
+
+  
 
   if (conversation.users.length === 2)
     return (

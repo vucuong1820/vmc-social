@@ -15,6 +15,7 @@ import { resizeImage } from "../shared/constants";
 import useSWRInfinite from "swr/infinite";
 import { useStore } from "../store";
 import Toast from "../components/Toast";
+import ChatPopup from "../components/ChatPopup/ChatPopup.jsx";
 
 const Home: FC = () => {
   const getKey = (index: number) => `home-${index || 0}`;
@@ -57,7 +58,7 @@ const Home: FC = () => {
           setSidebarActive={setSidebarActive}
         />
 
-        <div className="flex-grow px-[4vw] md:px-8 pb-8 pt-0 overflow-hidden flex flex-col items-stretch">
+        <div className="flex-grow px-[4vw] md:px-8 pb-8 pt-0 overflow-hidden flex flex-col items-stretch z-0">
           {!data || error ? (
             <>
               <div className="relative h-0 pb-[42%] mt-8">
@@ -158,6 +159,10 @@ const Home: FC = () => {
           <TopSearches />
         </div>
       </div>
+      {
+        currentUser?.uid && <ChatPopup currentUserId={currentUser?.uid} />
+      }
+      
     </>
   );
 };

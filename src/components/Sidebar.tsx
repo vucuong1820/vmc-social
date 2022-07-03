@@ -148,6 +148,19 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </Link>
 
             <Link
+              // onClick={() => {!currentUser && setDisplayModal('block')}}   
+              to="/watch-together-2"
+              className={`flex items-center gap-2 transition ${
+                location.pathname === '/history'
+                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              <i className="fas fa-people-arrows w-[24px] text-xl text-center"></i>
+              <p className="block sm:hidden xl:block">Watch together</p>
+            </Link>
+
+            <Link
               to="/search"
               className={`flex items-center gap-2 transition md:!hidden ${
                 location.pathname === '/search'

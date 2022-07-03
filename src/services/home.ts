@@ -9,7 +9,7 @@ export const getHome = async (page: number = 0): Promise<HomeSection[]> =>
         page,
       },
     })
-  ).data.data.recommendItems.filter((item) => !item.bannerProportion);
+  ).data.data.recommendItems.filter((item) => item.homeSectionType !== "BLOCK_GROUP");
 
 export const getTopSearched = async (): Promise<TopSearched[]> =>
   (await axios.get("search/v1/searchLeaderboard")).data.data.list;
