@@ -3,16 +3,15 @@ import React, { useState } from "react";
 import { db } from "../shared/firebase";
   
   function useFirestore(collectionName, condition) {
-    const [documents, setDocuments] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [documents, setDocuments] = useState<any>([])
+    const [isLoading, setIsLoading] = useState<any>(true)
   
     React.useEffect(() => {
 
       
       let collectionFiltered;
       collectionFiltered = query(
-        collection(db, collectionName),
-        where("movie", "==", "SpiderMan"))
+        collection(db, collectionName))
        
       const unsubscribe = onSnapshot(collectionFiltered, (snapshot) => {
        

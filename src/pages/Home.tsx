@@ -159,9 +159,6 @@ const Home: FC = () => {
           <TopSearches />
         </div>
       </div>
-      {
-        currentUser?.uid && <ChatPopup currentUserId={currentUser?.uid} />
-      }
       
     </>
   );

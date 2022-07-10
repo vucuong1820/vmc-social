@@ -20,7 +20,12 @@ export const useStore = create<any>((set: any) => ({
   //   }
   // },
   // setGlobalThisObj: () => set(),
-
+  currentChat: {
+    isShow: false,
+    conversationId: '',
+    chatPartner: {},
+  },
+  setCurrentChat: (chat) => set((prev) => ({...prev, currentChat: chat})), 
   currentUser: undefined,
   setCurrentUser: (user) => set((prev) => ({...prev, currentUser: user })),
 }));

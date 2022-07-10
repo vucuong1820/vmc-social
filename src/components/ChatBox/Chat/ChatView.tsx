@@ -33,8 +33,9 @@ const ChatView: FC<ChatViewProps> = ({
   replyInfo,
   setReplyInfo,
 }) => {
+  console.log(conversation)
   const { id: conversationId } = useParams();
-  console.log(conversationId)
+  console.log({conversationId})
 
   const currentUser = useStore((state) => state.currentUser);
 

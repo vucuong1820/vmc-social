@@ -1,33 +1,138 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import InputSection from '../Input/InputSection';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Spin } from 'react-cssfx-loading/lib';
+import { useCollectionQuery } from '../../../hooks/useCollectionQuery';
+import { getCollection } from '../../../hooks/getCollection';
 
+import { useDocumentQuery } from '../../../hooks/useDocumentQuery';
+import LeftMessage from '../Message/LeftMessage';
+import RightMessage from '../Message/RightMessage';
+import { collection, doc, limitToLast, orderBy, query, updateDoc } from 'firebase/firestore';
+import { db } from '../../../shared/firebase';
+import { useStore } from '../../../store';
+import { IMAGE_PROXY } from '../../../shared/constants';
 ChatViewPopup.propTypes = {};
 
-function ChatViewPopup(props) {
+function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
+  const setCurrentChat = useStore((state) => state.setCurrentChat);
+  const currentChat = useStore((state) => state.currentChat);
+
   const [replyInfo, setReplyInfo] = useState(null);
   const [inputSectionOffset, setInputSectionOffset] = useState(0);
+  const [limitCount, setLimitCount] = useState(10);
+  const [hasMore, setHasMore] = useState(true);
+  // const [data, setData] = useState(null);
+  // const [loading, setLoading] = useState(null);
+  // const [error, setError] = useState(null);
+
+  
+  
+
+  // useEffect(() => {
+    const { data, loading, error } = useCollectionQuery(
+      `conversation-data-${conversationId}-${limitCount}`,
+      query(
+        collection(db, 'conversations', conversationId, 'messages'),
+        orderBy('createdAt'),
+        // limitToLast(20)
+      ));
+
+      useEffect(() => {
+        (async () => {
+          if(currentChat.isShow === true && data){
+            console.log("update seen info:", currentUserId);
+            await updateDoc(doc(db, 'conversations', conversationId), {
+              [`seen-info-${currentUserId}`]: {
+                  currentMsgSeen: data?.docs.map((doc) => doc.data()).length
+              }
+            })
+          }
+        })()
+    }, [data])
+  //   );
+  //   setData(data)
+  //   setLoading(loading)
+  //   setError(error)
+  // }, [limitCount])
+  const {
+    data: conversationDataInfo,
+    loading: conversationLoading,
+    error: conversationError,
+  } = useDocumentQuery(`conversation-${conversationId}`, doc(db, 'conversations', conversationId));
+
+  const conversationData = conversationDataInfo?.data();
+
+  if (loading || error || conversationLoading || conversationError) {
+    return null;
+  }
+  const fetchMoreData = () => {
+    
+  }
   return (
-    <div className="fixed right-24 bottom-5 bg-white" style={{width: '338px', height: '455px'}}>
+    <div className="rounded-md overflow-hidden fixed right-24 bottom-5 bg-white" style={{ width: '338px', height: '455px' }}>
       <div className="heading absolute w-full h-12 p-1.5 bg-sky-500	 flex items-center">
         <div className="user-detail flex absolute items-center">
-        <img
-          className="avatar-circle rounded-full w-9"
-          src="https://apoqrsgtqq.cloudimg.io/https://lh3.googleusercontent.com/a/AATXAJwCccE6DnqvuJ1_8XEg7beejzMrFzpSYdAu3zEM=s96-c"
-        />
-        <div className="name"> Vũ Mạnh Cường </div>
+          <img
+            className="avatar-circle rounded-full w-9 mr-2"
+            src={IMAGE_PROXY(chatPartner.photoURL)}
+          />
+          <div className="name"> {chatPartner.displayName}</div>
         </div>
-        <div className="action absolute right-4">
+        <div onClick={() => setCurrentChat({isShow: false, conversationId: ''})} className="cursor-pointer action absolute right-4">
           <i className="fas fa-times"></i>
         </div>
       </div>
-      <div className="absolute bottom-0">
-      <InputSection
-        setInputSectionOffset={setInputSectionOffset}
-        replyInfo={replyInfo}
-        setReplyInfo={setReplyInfo}
-        disabled={false}
-      />
+      <div className="chat-view absolute top-12 bottom-16 left-0 right-0">
+        <InfiniteScroll
+          dataLength={data?.size}
+          // next={fetchMoreData}
+          inverse
+          // hasMore={false}
+          loader={
+            <div className="flex justify-center py-3">
+              <Spin />
+            </div>
+          }
+          style={{ display: 'flex', flexDirection: 'column-reverse', width: '100%', height: '100%' }}
+        >
+          <div className="flex flex-col items-stretch gap-3 pt-10 pb-1">
+            {(error || loading) && <Spin />}
+            {data &&
+              data?.docs
+                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .map((item, index) => (
+                  <Fragment key={index}>
+                    {item.sender === currentUserId ? (
+                      <RightMessage 
+                      replyInfo={replyInfo} 
+                      setReplyInfo={setReplyInfo} m
+                      message={item} />
+                    ) : (
+                      // <div>left </div>
+                      <LeftMessage
+                        replyInfo={replyInfo}
+                        setReplyInfo={setReplyInfo}
+                        message={item}
+                        index={index}
+                        docs={data?.docs}
+                        conversation={conversationData}
+                      />
+                    )}
+                  </Fragment>
+                ))}
+          </div>
+        </InfiniteScroll>
+      </div>
+      <div className="absolute bottom-0 chat-input">
+        <InputSection
+          conversationId={conversationId}
+          setInputSectionOffset={setInputSectionOffset}
+          replyInfo={replyInfo}
+          setReplyInfo={setReplyInfo}
+          disabled={false}
+        />
       </div>
     </div>
   );

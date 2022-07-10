@@ -21,7 +21,7 @@ const SelectConversation: FC<SelectConversationProps> = ({
   const currentUser = useStore((state) => state.currentUser);
 
   const filtered = users?.filter((user) => user.id !== currentUser?.uid);
-
+  
   const { id } = useParams();
 
   const {

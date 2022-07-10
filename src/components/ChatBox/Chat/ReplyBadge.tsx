@@ -17,7 +17,7 @@ const ReplyBadge: FC<ReplyBadgeProps> = ({ messageId }) => {
 
   const { data, loading, error } = useDocumentQuery(
     `message-${messageId}`,
-    doc(db, "conversations", conversationId as string, "messages", messageId)
+    doc(db, "conversations", conversationId || 'M2MF1Vntu1uFt72mL6IP', "messages", messageId)
   );
 
   if (loading || error)

@@ -86,3 +86,15 @@ input[type="checkbox"] {
   @apply hidden;
 }
 
+.chat-view .infinite-scroll-component__outerdiv {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* #191a20 */
+
+.chat-input .reply {
+  background-color: #191a20 !important;
+}

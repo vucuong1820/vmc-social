@@ -1,0 +1,12 @@
+/* #password:invalid {
+    border: 1px solid red;
+}
+
+.helper-text {
+    display: none;
+}
+
+#password:invalid .helper-text {
+    display: block;
+}
+     */

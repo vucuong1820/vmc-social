@@ -73,7 +73,7 @@ const CreateConversation: FC<CreateConversationProps> = ({ setIsOpened }) => {
 
       setIsOpened(false);
 
-      navigate(`/${created.id}`);
+      // navigate(`/${created.id}`);
     } else {
       setIsOpened(false);
 

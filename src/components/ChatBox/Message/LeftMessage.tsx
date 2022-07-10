@@ -46,9 +46,12 @@ const LeftMessage: FC<LeftMessageProps> = ({
           conversation.users.length === 2 ? "px-8" : "px-[70px]"
         } -mb-2 flex`}
       >
-        {!!message.replyTo && (
-          <ReplyBadge messageId={message.replyTo as string} />
-        )}
+        {/* {!!message.replyTo && (
+          message?.replyTo &&  <ReplyBadge messageId={message?.replyTo} />  
+        )} */}
+        {
+          message?.replyTo && <ReplyBadge messageId={message?.replyTo} />
+        }
       </div>
       <div
         onClick={(e) => {

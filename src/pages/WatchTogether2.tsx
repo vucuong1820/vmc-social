@@ -11,7 +11,6 @@ import Video from "../components/WatchTogether/Video.jsx"
 WatchTogether2.propTypes = {};
 
 function WatchTogether2(props) {
-  const ref = useRef();
   const [ documents, isLoading ] = useFirestore("room-watch", null)
   console.log({documents});
   const sources = [
@@ -143,6 +142,7 @@ const playerRef = useRef<any>()
   if(isLoading) return <div>Loading</div>
   return (
     <div>
+      <div className="overlay pointer-events-none	 fixed top-0 left-0 right-0 bottom-0"></div>
       <Player
         playerRef={playerRef}
         playerKey={'123'}
@@ -154,6 +154,7 @@ const playerRef = useRef<any>()
             url: subtitleProxy(subtitle.url),
           })) || []
         }
+        pictureInPicture={true}
       >
         {(ref, props) => {
           if(ref.current){
@@ -186,12 +187,12 @@ const playerRef = useRef<any>()
           //     paused: e.target.paused
           //   })
           // })
-          return <HlsPlayer playerRef={ref} {...props} src={`${props.src}`}/>;
+          return <HlsPlayer playerRef={ref} {...props} src={`${props.src}`} controls={false}/>;
         }}
         
       </Player>
-      <button onClick={handleChangeTime}>setTime</button>
-      <button onClick={handleUpdate}>set Update</button>
+      {/* <button onClick={handleChangeTime}>setTime</button>
+      <button onClick={handleUpdate}>set Update</button> */}
       <ChatBox />
     </div>
   );

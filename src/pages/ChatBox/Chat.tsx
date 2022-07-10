@@ -17,6 +17,8 @@ const Chat: FC = () => {
 
   const { id } = useParams();
 
+  console.log({id})
+
   const { data, loading, error } = useDocumentQuery(
     `conversation-${id}`,
     doc(db, "conversations", id as string)
@@ -62,6 +64,7 @@ const Chat: FC = () => {
               conversation={conversation}
             />
             <InputSection
+              conversationId={id}
               setInputSectionOffset={setInputSectionOffset}
               replyInfo={replyInfo}
               setReplyInfo={setReplyInfo}

@@ -13,10 +13,6 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -35,7 +31,6 @@ import { useStore } from "../../../store";
 import { db, storage } from "../../../shared/firebase";
 import { EMOJI_REPLACEMENT } from "../../../shared/constants";
 import { formatFileName } from "../../../shared/utils";
-import { useCollectionQuery } from "../../../hooks/useCollectionQuery";
 
 export interface FileListProps {
   files: File[]
@@ -44,7 +39,6 @@ export interface FileListProps {
 const Picker = lazy(() => import("./EmojiPicker"));
 
 interface InputSectionProps {
-  conversationId: any;
   disabled: boolean;
   setInputSectionOffset?: (value: number) => void;
   replyInfo?: any;
@@ -56,7 +50,6 @@ const InputSection: FC<InputSectionProps> = ({
   setInputSectionOffset,
   replyInfo,
   setReplyInfo,
-  conversationId
 }) => {
   const [inputValue, setInputValue] = useState("");
 
@@ -81,7 +74,7 @@ const InputSection: FC<InputSectionProps> = ({
   const [fileDragging, setFileDragging] = useState(false);
 
   const updateTimestamp = () => {
-    updateDoc(doc(db, "conversations", conversationId as string), {
+    updateDoc(doc(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string), {
       updatedAt: serverTimestamp(),
     });
   };
@@ -94,9 +87,9 @@ const InputSection: FC<InputSectionProps> = ({
     return () => window.removeEventListener("focus", handler);
   }, []);
 
-  useEffect(() => {
-    textInputRef.current?.focus();
-  }, [conversationId]);
+  // useEffect(() => {
+  //   textInputRef.current?.focus();
+  // }, [conversationId]);
 
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -132,8 +125,8 @@ const InputSection: FC<InputSectionProps> = ({
 
     setReplyInfo && setReplyInfo(null);
 
-    await addDoc(
-      collection(db, "conversations", conversationId as string, "messages"),
+    addDoc(
+      collection(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string, "messages"),
       {
         sender: currentUser?.uid,
         content: replacedInputValue.trim(),
@@ -142,32 +135,13 @@ const InputSection: FC<InputSectionProps> = ({
         replyTo: replyInfo?.id || null,
       }
     );
-    const data = await getDocs(query(
-      collection(db, 'conversations', conversationId, 'messages'),
-      orderBy('createdAt'),
-    ))
-    if(data){
-      await updateDoc(doc(db, "conversations", conversationId), {
-        'seenInfo': {
-          isSeenBy: [conversationId],
-          msgQtyNotSeen: 0,
-          msgQtySeen:  data.docs.length
-        }
-      })
-    }
-    // const { data, loading, error } = useCollectionQuery(
-    //   `conversation-data-${conversationId}-${null}`,
-    //   query(
-    //     collection(db, 'conversations', conversationId, 'messages'),
-    //     orderBy('createdAt'),
-    //   ));
-      if(data) console.log(data.docs.length);
+
     updateTimestamp();
   };
 
   const sendSticker = (url: string) => {
     addDoc(
-      collection(db, "conversations", conversationId as string, "messages"),
+      collection(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string, "messages"),
       {
         sender: currentUser?.uid,
         content: url,
@@ -198,7 +172,7 @@ const InputSection: FC<InputSectionProps> = ({
       const downloadURL = await getDownloadURL(fileReference);
 
       addDoc(
-        collection(db, "conversations", conversationId as string, "messages"),
+        collection(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string, "messages"),
         {
           sender: currentUser?.uid,
           content: downloadURL,
@@ -223,8 +197,6 @@ const InputSection: FC<InputSectionProps> = ({
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
-    console.log(file)
 
     if (!file) return;
 
@@ -268,7 +240,7 @@ const InputSection: FC<InputSectionProps> = ({
 
   const sendGif = (url: string) => {
     addDoc(
-      collection(db, "conversations", conversationId as string, "messages"),
+      collection(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string, "messages"),
       {
         sender: currentUser?.uid,
         content: url,

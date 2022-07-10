@@ -1,0 +1,7 @@
+.delete-popup {
+    display: none;
+}
+.popup-wrapper:hover .delete-popup {
+    display: flex;
+}
+

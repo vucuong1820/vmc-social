@@ -1,16 +1,16 @@
-import { FC, useEffect } from "react";
-import { PROXY, subtitleProxy } from "../../shared/constants";
+import { FC, useEffect } from 'react';
+import { PROXY, subtitleProxy } from '../../shared/constants';
 
-import Comment from "./Comment";
-import { DetailType } from "../../shared/types";
-import HlsPlayer from "react-hls-player";
-import MetaData from "./MetaData";
-import NavBar from "../NavBar";
-import { Player } from "react-tuby";
-import Similar from "./Similar";
-import Skeleton from "../Skeleton";
-import Title from "../Title";
-import { Link } from "react-router-dom";
+import Comment from './Comment';
+import { DetailType } from '../../shared/types';
+import HlsPlayer from 'react-hls-player';
+import MetaData from './MetaData';
+import NavBar from '../NavBar';
+import { Player } from 'react-tuby';
+import Similar from './Similar';
+import Skeleton from '../Skeleton';
+import Title from '../Title';
+import { Link } from 'react-router-dom';
 
 interface WatchViewProps {
   data?: DetailType;
@@ -30,24 +30,13 @@ interface WatchViewProps {
   episodeIndex?: number;
 }
 
-const WatchView: FC<WatchViewProps> = ({
-  data,
-  sources,
-  subtitles,
-  episodeIndex,
-}) => {
-  console.log(sources)
-  console.log(subtitles)
-  const mediaType = typeof episodeIndex === "undefined" ? "movie" : "tv";
-  const playerKey = `${mediaType}-${data?.id}${
-    episodeIndex ? `-${episodeIndex}` : ""
-  }`;
+const WatchView: FC<WatchViewProps> = ({ data, sources, subtitles, episodeIndex }) => {
+  const mediaType = typeof episodeIndex === 'undefined' ? 'movie' : 'tv';
+  const playerKey = `${mediaType}-${data?.id}${episodeIndex ? `-${episodeIndex}` : ''}`;
 
   useEffect(() => {
     if (!data) return;
-    let existing = JSON.parse(
-      localStorage.getItem("filmhot-recent") || "[]"
-    ) as {
+    let existing = JSON.parse(localStorage.getItem('filmhot-recent') || '[]') as {
       id: string;
       category: number;
       coverVerticalUrl: string;
@@ -65,16 +54,14 @@ const WatchView: FC<WatchViewProps> = ({
       name: data.name,
     });
 
-    localStorage.setItem("filmhot-recent", JSON.stringify(existing));
+    localStorage.setItem('filmhot-recent', JSON.stringify(existing));
   }, [data]);
   return (
     <>
       {data && (
         <Title
           value={`Watch ${data.name}${
-            typeof episodeIndex !== "undefined"
-              ? ` - Episode ${episodeIndex + 1}`
-              : ""
+            typeof episodeIndex !== 'undefined' ? ` - Episode ${episodeIndex + 1}` : ''
           } - FilmHot`}
         />
       )}
@@ -98,13 +85,7 @@ const WatchView: FC<WatchViewProps> = ({
                     }
                   >
                     {(ref, props) => {
-                      return (
-                        <HlsPlayer
-                          playerRef={ref}
-                          {...props}
-                          src={`${props.src}`}
-                        />
-                      )
+                      return <HlsPlayer playerRef={ref} {...props} src={`${props.src}`} />;
                     }}
                   </Player>
                 ) : (
@@ -113,18 +94,7 @@ const WatchView: FC<WatchViewProps> = ({
                   </div>
                 )}
               </div>
-              
-              <Link
-              to={`/watch-together/${data?.id}`}
-              className={`mt-4 flex items-center gap-2 transition ${
-                location.pathname === '/history'
-                  ? 'border-r-4 border-primary text-primary hover:brightness-125'
-                  : 'text-gray-400 hover:text-gray-300'
-              }`}
-            >
-              <i className="fas fa-people-arrows w-[24px] text-xl text-center"></i>
-              <p className="block sm:hidden xl:block">Watch together</p>
-            </Link>
+
               <MetaData data={data} episodeIndex={episodeIndex} />
 
               {data && <Comment data={data} episodeIndex={episodeIndex} />}
