@@ -43,7 +43,12 @@ const Comment: FC<CommentProps> = ({ data, episodeIndex }) => {
       setCommentLoading(true);
 
       addDoc(collection(db, collectionPath), {
-        user: currentUser,
+        user: {
+          displayName: currentUser?.displayName,
+          email: currentUser?.email,
+          photoURL: currentUser?.photoURL,
+          uid: currentUser?.uid,
+        },
         value: commentInputValue.trim().slice(0, 500),
         reactions: {},
         createdAt: serverTimestamp(),

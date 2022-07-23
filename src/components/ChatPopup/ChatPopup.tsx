@@ -45,7 +45,7 @@ const ChatPopup: FC<ChatPopupProps> = ({ currentUserId }) => {
   // );
   if(loading) return <div>Loading</div>;
   // console.log({currentUserId, data, error, loading })
-  
+  console.log('chat box')
   return (
     <div className="fixed bottom-4 right-8 ">
       {data?.docs.map((item) => (

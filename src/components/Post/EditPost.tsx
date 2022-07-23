@@ -1,23 +1,43 @@
 import axios from 'axios';
-import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { searchKeywords } from '../../services/search';
 import { db } from '../../shared/firebase';
 import { htmlToText } from '../../shared/utils';
 import { useStore } from '../../store';
 import Title from '../Title';
-import debounce from 'lodash.debounce'
-CreatePost.propTypes = {};
+import debounce from 'lodash.debounce';
+import { isEqual } from 'lodash';
 
-function CreatePost() {
+function EditPost() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [postDetails, setPostDetails] = useState<any>({});
   const currentUser = useStore((state) => state.currentUser);
-  if(!currentUser) return <Navigate to="/" />
+  if (!currentUser) return <Navigate to="/" />;
   const [profileImg, setProfileImg] = useState('');
+  const [fileValue, setFileValue] = useState(null);
   const [categoryValue, setCategoryValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      // @ts-ignore
+      const postSnap = await getDoc(doc(db, 'posts', id));
+      if (postSnap.exists()) {
+        setPostDetails({
+          ...postSnap.data(),
+          id: postSnap.id,
+          createdAt: new Date(
+            postSnap.data().createdAt.seconds * 1000 + postSnap.data().createdAt.nanoseconds / 1000000
+          ),
+        });
+      }
+    })();
+  }, []);
+
   const imageHandler = (e: any) => {
     const reader: any = new FileReader();
     reader.onload = () => {
@@ -26,37 +46,29 @@ function CreatePost() {
       }
     };
     reader.readAsDataURL(e.target.files[0]);
+    setFileValue(e.target.files[0]);
   };
   const handleOnInput = debounce(async (e) => {
     const valueInput = e.target.value;
-    const data = await searchKeywords(valueInput)
+    const data = await searchKeywords(valueInput);
     setSuggestions(data.map((item) => htmlToText(item)));
-  }, 500)
-  const handleSubmit = async (e: any) => {
+  }, 500);
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = new FormData(e.target);
-      const formObject: any = Object.fromEntries(data.entries());
       const formData = new FormData();
-      console.log(formObject.img);
-      formData.append('file', formObject.img);
+      formData.append('file', fileValue || '');
       formData.append('upload_preset', 'vmc_social');
       formData.append('cloud_name', 'dblyqezyt');
       const response = await axios.post('https://api.cloudinary.com/v1_1/dblyqezyt/image/upload', formData);
-      formObject.img = response.data.secure_url;
-      formObject.user = {
-        id: currentUser?.uid,
-        displayName: currentUser?.displayName,
-        photoURL: currentUser?.photoURL,
-      };
-      const dataRef = doc(collection(db, 'posts'));
-      // setDoc(dataRef, {
-      //   ...formObject,
-      //   createdAt: serverTimestamp(),
-      // });
-      console.log('done submit form');
-      e.target.reset();
-      // navigate('/post');
+      const imgUrl = response.data.secure_url;
+      const postRef = doc(db, 'posts', postDetails?.id);
+      await updateDoc(postRef, {
+        ...postDetails,
+        img: fileValue ? imgUrl : postDetails?.img,
+      });
+      console.log('done edit data');
+      navigate('/post');
     } catch (error) {
       console.log('error:', error);
     }
@@ -74,20 +86,20 @@ function CreatePost() {
             <span className="text-xl font-medium">Create new post</span>
           </div>
         </div>
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form autoComplete="off">
           <div className="mb-6 relative">
             <label htmlFor="category" className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300">
               Your category
             </label>
-            
+
             <input
-              autoComplete='off'
-              value={categoryValue}
+              autoComplete="off"
+              value={postDetails?.category}
               onInput={handleOnInput}
               onKeyDown={(e) => e.stopPropagation()}
               onKeyUp={(e) => e.stopPropagation()}
               onKeyPress={(e) => e.stopPropagation()}
-              onChange={(e) => setCategoryValue(e.target.value)}
+              onChange={(e) => setPostDetails((prev) => ({ ...prev, category: e.target.value }))}
               type="text"
               id="category"
               name="category"
@@ -96,28 +108,33 @@ function CreatePost() {
               required
             />
             {suggestions.length > 0 && (
-            <div  className="absolute z-10 top-full left-0 w-full bg-dark-lighten rounded overflow-x-hidden overflow-y-auto max-h-[200px] flex-col items-stretch group-focus-within:flex">
-              {suggestions.map((suggestion, index) => (
-                <div key={index} >
-                  <button
-                    className={`text-left p-2 w-full ${
-                      index !== suggestions.length - 1 ? 'border-b border-gray-500' : ''
-                    }`}
-                    onClick={() => {setCategoryValue(suggestion); setSuggestions([])}}
-                  >
-                    {suggestion}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+              <div className="absolute z-10 top-full left-0 w-full bg-dark-lighten rounded overflow-x-hidden overflow-y-auto max-h-[200px] flex-col items-stretch group-focus-within:flex">
+                {suggestions.map((suggestion, index) => (
+                  <div key={index}>
+                    <button
+                      className={`text-left p-2 w-full ${
+                        index !== suggestions.length - 1 ? 'border-b border-gray-500' : ''
+                      }`}
+                      onClick={() => {
+                        setPostDetails((prev) => ({ ...prev, category: suggestion }));
+                        setSuggestions([]);
+                      }}
+                    >
+                      {suggestion}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          
+
           <div className="mb-6">
             <label htmlFor="title" className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300">
               Your title
             </label>
             <input
+              value={postDetails?.title}
+              onChange={(e) => setPostDetails((prev) => ({ ...prev, title: e.target.value }))}
               type="text"
               id="title"
               name="title"
@@ -132,6 +149,8 @@ function CreatePost() {
               Your Content
             </label>
             <textarea
+              value={postDetails?.content}
+              onChange={(e) => setPostDetails((prev) => ({ ...prev, content: e.target.value }))}
               id="content"
               name="content"
               rows={10}
@@ -154,9 +173,10 @@ function CreatePost() {
               onChange={imageHandler}
             />
           </div>
-          <img src={profileImg} alt="" id="img" className="h-auto w-96 rounded-lg" />
+          <img src={profileImg || postDetails?.img} alt="" id="img" className="h-auto w-96 rounded-lg" />
 
           <button
+            onClick={handleSubmit}
             type="submit"
             className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 sm:w-auto"
           >
@@ -168,4 +188,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default EditPost;

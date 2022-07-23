@@ -24,11 +24,11 @@ import VoiceCall from './pages/VoiceCall';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import WatchTogether from './pages/WatchTogether';
-import WatchTogether2 from './pages/WatchTogether2';
 import WatchTogetherControl from './pages/WatchTogetherControl';
 
 import ChatPopup from './components/ChatPopup/ChatPopup';
 import CreateRoomWatch from './pages/CreateRoomWatch';
+import EditPost from './components/Post/EditPost';
 
 const App: FC = () => {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
@@ -39,12 +39,16 @@ const App: FC = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setCurrentUser(user);
+        setCurrentUser({
+          ...user,
+          displayName: user?.displayName || user?.phoneNumber,
+          photoURL: user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        });
         setDoc(doc(db, 'users', user.uid), {
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
+          displayName: user?.displayName || user?.phoneNumber,
+          photoURL: user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           phoneNumber: user.phoneNumber || user.providerData?.[0]?.phoneNumber,
         });
       } else {
@@ -63,6 +67,7 @@ const App: FC = () => {
         <Route index element={<Home />} />
         <Route path="movie/:id" element={<Movie />} />
         <Route path="post" element={<PostList />} />
+        <Route path="post/edit/:id" element={<EditPost />} />
         <Route path="post/:id" element={<PostDetail />} />
         <Route path="post/create" element={<CreatePost />} />
         <Route path="tv/:id" element={<TV />} />
@@ -78,7 +83,6 @@ const App: FC = () => {
         <Route path="profile" element={<Profile />} />
         <Route path="watch-together/:id" element={<WatchTogetherControl />} />
         <Route path="watch-together" element={<CreateRoomWatch />} />
-        <Route path="watch-together-2" element={<WatchTogether2 />} />
       </Routes>
       {currentUser?.uid && <ChatPopup currentUserId={currentUser?.uid} />}
     </>

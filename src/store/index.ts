@@ -7,25 +7,17 @@ interface StoreType {
 }
 
 export const useStore = create<any>((set: any) => ({
-  // peerObj: null,
-  // setPeerObj: (obj) => set((prev) => ({...prev, peerObj: obj})),
-  // peerIds: [],
-  // setPeerIds: (peerId) => set((prev) => ({...prev,peerIds: [...prev.peerIds,peerId]})),
-  // isHost: null,
-  // setIsHost: (bool) => set((prev) => ({...prev,isHost: bool})),
-  
-  // global_this_obj: {
-  //   state: {
-  //     connected_users: null
-  //   }
-  // },
-  // setGlobalThisObj: () => set(),
   currentChat: {
     isShow: false,
     conversationId: '',
     chatPartner: {},
   },
-  setCurrentChat: (chat) => set((prev) => ({...prev, currentChat: chat})), 
+  setCurrentChat: (chat) => set((prev) => ({...prev, currentChat: chat})),
+  voiceDetails: {
+    appId: '3d3864b7b2b0419bacd5081751ce6a9e',
+    token: '0063d3864b7b2b0419bacd5081751ce6a9eIABDR7fTEMzj/VlBw47mrPjel0V7HvUOs9qD/57VQiy5HWTNKL8AAAAAEAAtDEjTSX/dYgEAAQBIf91i',
+    channel: 'main'
+  } ,
   currentUser: undefined,
   setCurrentUser: (user) => set((prev) => ({...prev, currentUser: user })),
 }));

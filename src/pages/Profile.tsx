@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Title from '../components/Title';
 import { Link } from 'react-router-dom';
+import { useStore } from '../store';
 
 Profile.propTypes = {};
 
 function Profile(props) {
+  const currentUser = useStore((state) => state.currentUser);
+  const voiceDetails = useStore((state) => state.voiceDetails);
+
   return (
     <>
       <Title value="Profile - VMC Social" />
@@ -27,25 +31,90 @@ function Profile(props) {
                 Your email
               </label>
               <input
-                value="cuong123@gmail.com"
+                value={currentUser?.email}
                 type="text"
                 disabled
                 id="email"
+                placeholder='Your email'
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@flowbite.com"
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+              <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Your phone number
+              </label>
+              <input
+                value={currentUser?.phoneNumber}
+                type="text"
+                disabled
+                id="phone"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Your phone number"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="UID" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Your UID
               </label>
               <input
                 disabled
-                value="1237889"
-                type="number"
-                id="password"
+                value={currentUser?.uid}
+                type="text"
+                id="UID"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
+                placeholder="Your ID"
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Photo 
+              </label>
+              <img className='rounded-lg' src={currentUser?.photoURL} width={200}/>
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="app-id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Your APP ID ( voice chat )
+              </label>
+              <input
+                disabled
+                value={voiceDetails?.appId}
+                type="text"
+                id="app-id"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+                placeholder="Your app id"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="token" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Your APP Token ( voice chat )
+              </label>
+              <input
+                disabled
+                value={voiceDetails?.token}
+                type="text"
+                id="token"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+                placeholder="Your app token"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="channel" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Channel voice chat
+              </label>
+              <input
+                disabled
+                value={voiceDetails?.channel}
+                type="text"
+                id="channel"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+                placeholder="Your channel name"
               />
             </div>
            

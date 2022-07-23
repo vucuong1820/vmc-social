@@ -51,7 +51,7 @@ interface InputSectionProps {
   setReplyInfo?: (value: any) => void;
 }
 
-const InputSection: FC<InputSectionProps> = ({
+const InputSection: FC<any> = ({
   disabled,
   setInputSectionOffset,
   replyInfo,

@@ -2,22 +2,25 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../Title';
 import NavBar from '../NavBar';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../shared/firebase';
 import { formatDateFirebase, htmlToText } from '../../shared/utils';
-import { doc, getDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc } from 'firebase/firestore';
 import { searchKeywords, searchWithKeyword } from '../../services/search';
 import useSWR from 'swr';
 import { useStore } from '../../store';
+import ConfirmModal from './ConfirmModal';
 
 PostDetail.propTypes = {};
 
 function PostDetail(props) {
+  const navigate = useNavigate();
   const currentUser = useStore((state) => state.currentUser);
-  if(!currentUser) return <Navigate to="/" />
+  if (!currentUser) return <Navigate to="/" />;
   const { id } = useParams();
   const [postDetails, setPostDetails] = useState<any>({});
   const [relatedList, setRelatedList] = useState<any>([]);
+  const [displayModal, setDisplayModal] = useState<any>('hidden');
   useEffect(() => {
     (async () => {
       // @ts-ignore
@@ -25,6 +28,7 @@ function PostDetail(props) {
       if (postSnap.exists()) {
         setPostDetails({
           ...postSnap.data(),
+          id: postSnap.id,
           createdAt: new Date(
             postSnap.data().createdAt.seconds * 1000 + postSnap.data().createdAt.nanoseconds / 1000000
           ),
@@ -33,14 +37,24 @@ function PostDetail(props) {
     })();
   }, []);
   useEffect(() => {
-      (async () => {
-        if(postDetails?.title){
-          const data = await searchWithKeyword(postDetails?.category);
-          setRelatedList(data.slice(0,3).map(movie => ({img: movie.coverHorizontalUrl, id: movie.id, name: movie.name})))
-        }
-      })()
-  }, [postDetails])
-  console.log(relatedList)
+    (async () => {
+      if (postDetails?.title) {
+        const data = await searchWithKeyword(postDetails?.category);
+        setRelatedList(
+          data.slice(0, 3).map((movie) => ({ img: movie.coverHorizontalUrl, id: movie.id, name: movie.name }))
+        );
+      }
+    })();
+  }, [postDetails]);
+  const handleDelete = async () => {
+    try {
+      await deleteDoc(doc(db, 'posts', postDetails?.id));
+      console.log('delete successfully!');
+      navigate('/post');
+    } catch (error) {
+      console.log('error delete post:', error);
+    }
+  };
   return (
     <>
       <Title value="Explore - VMC Social" />
@@ -58,7 +72,7 @@ function PostDetail(props) {
           <section className="flex w-full flex-col items-center px-3 md:w-9/12">
             <article className="w-full my-4 flex flex-col overflow-hidden rounded-2xl shadow ">
               <a href="#" className="">
-                <img className="w-full" src={postDetails?.img || ''} />
+                <img className="w-full" src={postDetails?.img || 'https://placehold.jp/727274/ffffff/744x1098.png?text=%20'} />
               </a>
               <div className="flex flex-col justify-start bg-dark-lighten p-8">
                 <a href="#" className="pb-4 text-sm font-bold uppercase text-blue-700">
@@ -76,7 +90,7 @@ function PostDetail(props) {
                   {Object.keys(postDetails).length > 0 && formatDateFirebase(new Date(postDetails?.createdAt))}
                 </a>
                 <h1 className="pb-3 text-2xl font-bold">Introduction</h1>
-                <p className="pb-3">{postDetails?.content}</p>
+                <p className="pb-3 whitespace-pre-line	">{postDetails?.content}</p>
               </div>
             </article>
           </section>
@@ -87,6 +101,7 @@ function PostDetail(props) {
                   relatedList.map((movie: any) => (
                     <img key={movie.id} className="hover:opacity-75 rounded-md w-full mb-3" src={movie.img} />
                   ))}
+                
               </div>
               <a
                 href="#"
@@ -95,9 +110,27 @@ function PostDetail(props) {
                 <i className="fas fa-film w-[24px] text-xl mr-2"></i> Related movie
               </a>
             </div>
+            {currentUser?.uid === postDetails?.user?.id && (
+              <div className="w-full">
+                <div onClick={() => setDisplayModal('block')} className="mb-2 hover:text-rose-500 cursor-pointer">
+                  <i className="fas fa-trash mr-2"></i>
+                  Delete post
+                </div>
+                <Link to={`/post/edit/${postDetails?.id}`} className="hover:text-primary cursor-pointer">
+                  <i className="fas fa-edit mr-2"></i>
+                  Edit post
+                </Link>
+              </div>
+            )}
           </aside>
         </div>
       </div>
+      <ConfirmModal
+        title="Delete post"
+        displayModal={displayModal}
+        onSetDisplayModal={setDisplayModal}
+        onDelete={handleDelete}
+      />
     </>
   );
 }

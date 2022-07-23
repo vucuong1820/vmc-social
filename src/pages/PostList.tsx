@@ -22,7 +22,7 @@ interface PostDetails {
 }
 function PostList(props) {
   const currentUser = useStore((state) => state.currentUser);
-  if(!currentUser) return <Navigate to="/"/>
+  if (!currentUser) return <Navigate to="/" />;
 
   const [postsList, setPostsList] = useState([]);
   useEffect(() => {
@@ -37,10 +37,9 @@ function PostList(props) {
     });
     return unsubscribe;
   }, []);
-  console.log(postsList);
   return (
     <>
-      <Title value="Explore - VMC Social" />
+      <Title value="Blog - VMC Social" />
       <div className="flex flex-col items-stretch min-h-screen mx-[7vw]">
         <div className="my-7 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -48,38 +47,46 @@ function PostList(props) {
               <i className="fas fa-arrow-left w-[24px] text-xl text-white"></i>
             </Link>
             <img className="h-8 w-8" src="/vmc_avatar.webp" />
-            <span className="text-xl font-medium">Create new post</span>
+            <span className="text-xl font-medium">Blog post</span>
           </div>
-        </div>
-
-        <div className="container mx-auto flex flex-wrap py-6">
           <Link className="px-3 hover:text-primary flex items-center" to="/post/create">
             <i className="fas fa-edit mr-2"></i>
             <span className="">Create new post</span>
           </Link>
-          <section className="flex w-full flex-col items-center px-3 md:w-full">
-            {postsList.length > 0 &&
-              postsList.map((post: PostDetails) => (
-                <article key={post.id} className="my-4 flex flex-col shadow rounded-2xl overflow-hidden w-full">
-                  <div className="hover:opacity-75">
-                    <img className="w-full" src={post.img} />
+        </div>
+        <div className="w-full mx-1.5">
+          {postsList?.length > 0 &&
+            postsList.map((post: PostDetails, index) => (
+              <Link to={`/post/${post.id}`} className={`flex items-center group mb-3 pb-3 ${index === postsList.length - 1 ? '' : 'border-b'}`} key={post?.id}>
+                <img src={post?.img} className="rounded-md object-cover mr-3 h-24 w-24" />
+                <div className="flex-1">
+                  <span className="inline-block mb-4 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                  {post.category}
+                  </span>
+                  <h2 className="font-bold text-lg leading-tight group-hover:underline mb-2">{post?.title}</h2>
+                  <div className="flex items-center">
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      data-prefix="far"
+                      data-icon="clock"
+                      className="h-3 mr-1"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"
+                      ></path>
+                    </svg>
+                    <span className="text-xs">
+                      {formatDateFirebase(post.createdAt)} | {post.user.displayName}
+                    </span>
                   </div>
-                  <div className="flex flex-col justify-start bg-dark-lighten p-8 group-hover:text-primary">
-                    <div className="pb-4 text-sm font-bold uppercase text-blue-700">{post.category}</div>
-                    <div className="">{post.title}</div>
-                    <div className="flex mt-1 mb-5 text-sm italic opacity-60">
-                      By
-                      <div className="ml-1">{post.user.displayName}</div>, Published on{' '}
-                      {formatDateFirebase(post.createdAt)}
-                    </div>
-                    <div className="pb-6">{post.content}</div>
-                    <Link to={`/post/${post.id}`} className="uppercase ">
-                      Continue Reading <i className="fas fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </article>
-              ))}
-          </section>
+                </div>
+              </Link>
+            ))}
         </div>
       </div>
     </>

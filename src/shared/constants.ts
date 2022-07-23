@@ -1,5 +1,5 @@
 export const resizeImage = (url: string, width = "", height = "") =>
-  url.startsWith("https://graph.facebook.com/")
+  url?.startsWith("https://graph.facebook.com/")
     ? url
     : `https://images.weserv.nl/?url=${encodeURIComponent(
         url

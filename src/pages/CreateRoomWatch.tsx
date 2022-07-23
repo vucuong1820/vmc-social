@@ -18,7 +18,6 @@ function CreateRoomWatch(props) {
     data: {},
   });
   const [documents, isLoading] = useFirestore('room-watch', '');
-  console.log(documents);
   const [displayModal, setDisplayModal] = useState(false);
   const generateDotPassword = (password) => {
     const passwordLength = password.length;

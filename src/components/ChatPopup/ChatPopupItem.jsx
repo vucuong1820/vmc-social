@@ -34,7 +34,7 @@ function ChatPopupItem({ conversation, conversationId, currentUserId }) {
     const msgLength = data?.docs.map((doc) => doc.data()).length
 
     const timeoutId = setTimeout(() => {
-      setMsgNotSeen(msgLength - conversation[`seen-info-${currentUserId}`].currentMsgSeen)
+      setMsgNotSeen(msgLength - conversation?.[`seen-info-${currentUserId}`]?.currentMsgSeen)
     }, 200)
     return () => clearTimeout(timeoutId)
 
