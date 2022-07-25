@@ -1,39 +1,28 @@
-import { FC, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-
-import Category from './pages/Category';
-import Discovery from './pages/Discovery';
-import Explore from './pages/Explore';
-import History from './pages/History';
-import Home from './pages/Home';
-import Movie from './pages/Movie';
-import Search from './pages/Search';
-import SignIn from './pages/SignIn';
-import TV from './pages/TV';
-import { auth, db } from './shared/firebase';
+import AgoraRTC from 'agora-rtc-sdk-ng';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useLocation } from 'react-router-dom';
-import { useStore } from './store';
-import ChatBox from './pages/ChatBox';
 import { doc, setDoc } from 'firebase/firestore';
-import PostList from './pages/PostList';
-import Chat from './pages/ChatBox/Chat';
-import PostDetail from './components/Post/PostDetail';
-import CreatePost from './components/Post/CreatePost';
-import VoiceCall from './pages/VoiceCall';
-import PrivateRoute from './components/PrivateRoute';
-import Profile from './pages/Profile';
-import WatchTogether from './pages/WatchTogether';
-import WatchTogetherControl from './pages/WatchTogetherControl';
-
+import { FC, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import AppRoutes from './AppRoutes';
 import ChatPopup from './components/ChatPopup/ChatPopup';
-import CreateRoomWatch from './pages/CreateRoomWatch';
-import EditPost from './components/Post/EditPost';
+import VoiceModal from './components/FormModal';
+import Toast from './components/Toast';
+import { client } from './components/VoiceCall/settings';
+import { auth, db } from './shared/firebase';
+import { useStore } from './store';
 
 const App: FC = () => {
-  const setCurrentUser = useStore((state) => state.setCurrentUser);
-  const currentUser = useStore((state) => state.currentUser);
-
+  const [localAudioTrack, setLocalAudioTrack] = useState<any>();
+  const { displayVoiceModal, setDisplayVoiceModal, currentUser, setCurrentUser, voiceDetails } = useStore(
+    (state) => state
+  );
+  const [isJoinVoice, setIsJoinVoice] = useState<any>(false);
+  const [toast, setToast] = useState({
+    isShow: false,
+    error: false,
+    message: '',
+    duration: 3000,
+  });
   const location = useLocation();
 
   useEffect(() => {
@@ -42,13 +31,15 @@ const App: FC = () => {
         setCurrentUser({
           ...user,
           displayName: user?.displayName || user?.phoneNumber,
-          photoURL: user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+          photoURL:
+            user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
         });
         setDoc(doc(db, 'users', user.uid), {
           uid: user.uid,
           email: user.email,
           displayName: user?.displayName || user?.phoneNumber,
-          photoURL: user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+          photoURL:
+            user?.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
           phoneNumber: user.phoneNumber || user.providerData?.[0]?.phoneNumber,
         });
       } else {
@@ -61,30 +52,111 @@ const App: FC = () => {
     window.scrollTo(0, 0);
   }, [location.pathname, location.search]);
 
+  useEffect(() => {
+    (async () => {
+      client.on('user-published', async (user, mediaType) => {
+        // Subscribe to the remote user when the SDK triggers the "user-published" event
+        await client.subscribe(user, mediaType);
+        console.log('subscribe success');
+
+        // If the remote user publishes an audio track.
+        if (mediaType === 'audio') {
+          const remoteAudioTrack: any = user.audioTrack;
+          remoteAudioTrack.play();
+        }
+
+        // Listen for the "user-unpublished" event
+        client.on('user-unpublished', async (user) => {
+          // Unsubscribe from the tracks of the remote user.
+          await client.unsubscribe(user);
+        });
+      });
+    })();
+  }, []);
+  const handleLeave = async () => {
+    try {
+      if (localAudioTrack) {
+        localAudioTrack.close();
+        await client.leave();
+        setIsJoinVoice(false);
+      }
+      setToast((prev) => ({
+        ...prev,
+        error: false,
+        isShow: true,
+        message: 'Leave room chat sucessfully!',
+      }));
+    } catch (error) {
+      console.log('failed to leave room:', { error });
+      setToast((prev) => ({
+        ...prev,
+        error: true,
+        isShow: true,
+        message: 'Failed to leave room chat !!',
+      }));
+    }
+  };
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const formObject: any = Object.fromEntries(data.entries());
+    try {
+      await client.join(formObject['app-id'], formObject['channel-name'], formObject.token, null);
+      const track: any = await AgoraRTC.createMicrophoneAudioTrack();
+      setLocalAudioTrack(track);
+      await client.publish([track]);
+      setIsJoinVoice(true);
+      console.log('publish success');
+      setDisplayVoiceModal('hidden');
+      setToast((prev) => ({
+        ...prev,
+        isShow: true,
+        error: false,
+        message: 'Join room chat successfully!',
+      }));
+    } catch (error: any) {
+      console.log('error join:', { error });
+      setIsJoinVoice(false);
+      setToast((prev) => ({
+        ...prev,
+        isShow: true,
+        message: 'Failed to join room chat. Please try again!',
+        error: true,
+      }));
+    }
+  };
+
   return (
     <>
-      <Routes>
-        <Route index element={<Home />} />
-        <Route path="movie/:id" element={<Movie />} />
-        <Route path="post" element={<PostList />} />
-        <Route path="post/edit/:id" element={<EditPost />} />
-        <Route path="post/:id" element={<PostDetail />} />
-        <Route path="post/create" element={<CreatePost />} />
-        <Route path="tv/:id" element={<TV />} />
-        <Route path="search" element={<Search />} />
-        <Route path="explore" element={<Explore />} />
-        <Route path="sign-in" element={<SignIn />} />
-        <Route path="history" element={<History />} />
-        <Route path="category/:id" element={<Category />} />
-        <Route path="discovery" element={<Discovery />} />
-        <Route path="chat-box" element={<ChatBox />} />
-        <Route path="chat-box/:id" element={<Chat />} />
-        <Route path="voice-call" element={<VoiceCall />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="watch-together/:id" element={<WatchTogetherControl />} />
-        <Route path="watch-together" element={<CreateRoomWatch />} />
-      </Routes>
+      <AppRoutes />
       {currentUser?.uid && <ChatPopup currentUserId={currentUser?.uid} />}
+      {isJoinVoice && (
+        <span
+          onClick={handleLeave}
+          className="cursor-pointer hover:opacity-50 fixed bottom-12 left-7 z-10 flex h-14 w-14"
+        >
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span className="justify-center relative inline-flex rounded-full h-14 w-14 bg-slate-700">
+            <i className="flex items-center justify-center fas fa-phone w-[24px] text-xl"></i>
+          </span>
+        </span>
+      )}
+      <VoiceModal
+        voiceDetails={voiceDetails}
+        handleSubmit={handleSubmit}
+        displayModal={displayVoiceModal}
+        onSetDisplayModal={(display) => setDisplayVoiceModal(display)}
+      />
+      {toast.isShow && (
+        <Toast
+          duration={toast.duration}
+          error={toast.error}
+          message={toast.message}
+          onSetIsShow={(res) => setToast((prev) => ({ ...prev, isShow: res }))}
+        />
+      )}
     </>
   );
 };

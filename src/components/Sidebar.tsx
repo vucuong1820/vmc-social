@@ -1,12 +1,11 @@
-import { Link, useLocation } from 'react-router-dom';
-
-import { FC, useCallback, useEffect, useState } from 'react';
-import { auth } from '../shared/firebase';
-import { resizeImage } from '../shared/constants';
 import { signOut } from 'firebase/auth';
+import { FC, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { resizeImage } from '../shared/constants';
+import { auth } from '../shared/firebase';
 import { useStore } from '../store';
 import Modal from './Modal';
-import FormModal from './FormModal';
+
 
 interface SidebarProps {
   sidebarActive: boolean;
@@ -15,9 +14,8 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
   const location = useLocation();
-  const currentUser = useStore((state) => state.currentUser);
+  const { currentUser, setDisplayVoiceModal } = useStore((state) => state);
   const [displayModal, setDisplayModal] = useState('hidden');
-  const [displayFormModal, setDisplayFormModal] = useState('hidden');
   const handleSignOut = () => {
     signOut(auth);
   };
@@ -121,7 +119,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
                 if(!currentUser){
                   setDisplayModal('block')
                 }else {
-                  setDisplayFormModal("flex")
+                  setDisplayVoiceModal("flex")
                 }
               }}
               className={`flex items-center gap-2 transition ${
@@ -203,10 +201,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
         title="VMC Chat box"
         displayModal={displayModal}
         onSetDisplayModal={setDisplayModal}
-      />
-      <FormModal 
-      displayModal={displayFormModal}
-      onSetDisplayModal={(display) => setDisplayFormModal(display)}
       />
     </>
   );

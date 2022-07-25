@@ -1,101 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Toast from './Toast';
-import { client, appId, token, channelName } from './VoiceCall/settings';
-import AgoraRTC from 'agora-rtc-sdk-ng';
-import { RtcTokenBuilder, RtcRole } from "agora-access-token"
+import React from 'react';
 
-FormModal.propTypes = {};
-
-function FormModal({displayModal, onSetDisplayModal}) {
-  const [localAudioTrack, setLocalAudioTrack] = useState<any>()
-  const [isJoin, setIsJoin] = useState(false)
-  useEffect(() => {
-    (async () => {
-     
-      client.on("user-published", async (user, mediaType) => {
-        // Subscribe to the remote user when the SDK triggers the "user-published" event
-        await client.subscribe(user, mediaType);
-        console.log("subscribe success");
-
-        // If the remote user publishes an audio track.
-        if (mediaType === "audio") {
-            const remoteAudioTrack: any = user.audioTrack;
-            remoteAudioTrack.play();
-            
-        }
-
-        // Listen for the "user-unpublished" event
-        client.on("user-unpublished", async (user) => {
-            // Unsubscribe from the tracks of the remote user.
-            await client.unsubscribe(user);
-        });
-
-    });
-    
-
-    })()
-  },[])
-  const handleLeave = async () => {
-      try {
-        if(localAudioTrack){
-          localAudioTrack.close();
-          await client.leave()
-          setIsJoin(false)
-        }
-        setToast(prev => ({
-          ...prev,
-          error: false,
-          isShow: true,
-          message: "Leave room chat sucessfully!"
-        }))
-      } catch (error) {
-        console.log("failed to leave room:",{error})
-        setToast(prev => ({
-          ...prev,
-          error: true,
-          isShow: true,
-          message: "Failed to leave room chat !!"
-        }))
-      }
-  }
-
-  const [toast, setToast] = useState({
-    isShow: false,
-    error: false,
-    message: '',
-    duration: 3000,
-  })
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const formObject: any = Object.fromEntries(data.entries());
-    try {
-      await client.join(formObject["app-id"], formObject["channel-name"],formObject.token, null)
-      const track: any = await AgoraRTC.createMicrophoneAudioTrack();
-      setLocalAudioTrack(track)
-      await client.publish([track])
-      setIsJoin(true)
-      console.log("publish success")
-      setToast(prev => ({
-        ...prev,
-        isShow: true,
-        error: false,
-        message: "Join room chat successfully!"
-      }))
-    } catch (error: any) {
-      console.log("error join:",{error})
-      setIsJoin(false)
-      setToast(prev => ({
-        ...prev,
-        isShow: true,
-        message: "Failed to join room chat. Please try again!",
-        error: true
-      }))
-    }
-
-    
-  }
+function VoiceModal({handleSubmit, voiceDetails, displayModal, onSetDisplayModal}) {
   return (
     <>
       <div
@@ -127,6 +32,7 @@ function FormModal({displayModal, onSetDisplayModal}) {
                     Your App ID
                   </label>
                   <input
+                    value={voiceDetails?.appId}
                     type="text"
                     name="app-id"
                     id="app-id"
@@ -139,6 +45,7 @@ function FormModal({displayModal, onSetDisplayModal}) {
                     Your token
                   </label>
                   <input
+                    value={voiceDetails?.token}
                     type="text"
                     name="token"
                     id="token"
@@ -154,6 +61,7 @@ function FormModal({displayModal, onSetDisplayModal}) {
                     Your channel name
                   </label>
                   <input
+                    value={voiceDetails?.channel}
                     type="text"
                     name="channel-name"
                     id="channel-name"
@@ -182,24 +90,16 @@ function FormModal({displayModal, onSetDisplayModal}) {
           </div>
         </div>
       </div>
-      {toast.isShow && (
-        <Toast
-          duration={toast.duration}
-          error={toast.error}
-          message={toast.message}
-          onSetIsShow={(res) => setToast((prev) => ({ ...prev, isShow: res }))}
-        />
-      )}
-      {isJoin && (
+      {/* {isJoin && (
         <span onClick={handleLeave} className="cursor-pointer hover:opacity-50 fixed bottom-12 left-7 z-10 flex h-14 w-14">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
           <span className="justify-center relative inline-flex rounded-full h-14 w-14 bg-slate-700">
             <i className="flex items-center justify-center fas fa-phone w-[24px] text-xl"></i>
           </span>
         </span>
-      )}
+      )} */}
     </>
   );
 }
 
-export default FormModal;
+export default VoiceModal;
