@@ -1,19 +1,24 @@
-# VMC Social 
+# VMC Social
 
 Social media for watching film, chat, post blog
-<<<<<<< HEAD
+
 ## Movie sources
 
 From LokLok App.  
  [https://documenter.getpostman.com/view/18986031/UVXdNeFD](https://documenter.getpostman.com/view/18986031/UVXdNeFD)
-=======
 
+## Installation
 
-## Movie sources
+- Clone the Project
+- Run `npm install`
+- Create your own firebase project and add _The JSON stringified_ config to `VITE_FIREBASE_CONFIG` environment variable
 
-From LokLok App.  
-(https://documenter.getpostman.com/view/18986031/UVXdNeFD)
->>>>>>> cdd7b81ba97b8eac9ac6b0385fb9e30d839fa027
+- Example .env file:
+
+```env
+VITE_FIREBASE_CONFIG={"apiKey":"","authDomain":"","projectId":"","storageBucket":"","messagingSenderId":"","appId":""}
+```
+- Run local project: `npm run dev`
 
 ## Main technology used
 
@@ -23,6 +28,7 @@ From LokLok App.
 - Firebase (authentication, comment)
 - Swiper (slider)
 - react-infinite-scroll-component (Infinite loading)
+- Agora (voice call)
 
 ## Features
 
@@ -33,5 +39,6 @@ From LokLok App.
 - Filter by region, categories, periods
 - Discovery feature (Short videos like tiktok)
 - Watch history
-- Comments (require authentication using google, facebook)
-
+- Comments (require authentication using google, github or mobile phone)
+- Voice call
+- Watch together
