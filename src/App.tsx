@@ -1,15 +1,19 @@
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import { Picker } from 'emoji-mart';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
+import EmojiPicker from './components/ChatBox/Input/EmojiPicker';
 import ChatPopup from './components/ChatPopup/ChatPopup';
 import VoiceModal from './components/FormModal';
 import Toast from './components/Toast';
 import { client } from './components/VoiceCall/settings';
 import { auth, db } from './shared/firebase';
 import { useStore } from './store';
+import "emoji-mart/css/emoji-mart.css";
+
 
 const App: FC = () => {
   const [localAudioTrack, setLocalAudioTrack] = useState<any>();

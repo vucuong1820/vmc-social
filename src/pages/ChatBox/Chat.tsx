@@ -17,7 +17,6 @@ const Chat: FC = () => {
 
   const { id } = useParams();
 
-  console.log({id})
 
   const { data, loading, error } = useDocumentQuery(
     `conversation-${id}`,

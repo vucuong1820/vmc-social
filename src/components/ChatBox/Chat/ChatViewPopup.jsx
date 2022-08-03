@@ -1,18 +1,16 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import InputSection from '../Input/InputSection';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Spin } from 'react-cssfx-loading/lib';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useCollectionQuery } from '../../../hooks/useCollectionQuery';
-import { getCollection } from '../../../hooks/getCollection';
+import InputSection from '../Input/InputSection';
 
+import { collection, doc, orderBy, query, updateDoc } from 'firebase/firestore';
 import { useDocumentQuery } from '../../../hooks/useDocumentQuery';
-import LeftMessage from '../Message/LeftMessage';
-import RightMessage from '../Message/RightMessage';
-import { collection, doc, limitToLast, orderBy, query, updateDoc } from 'firebase/firestore';
+import { IMAGE_PROXY } from '../../../shared/constants';
 import { db } from '../../../shared/firebase';
 import { useStore } from '../../../store';
-import { IMAGE_PROXY } from '../../../shared/constants';
+import LeftMessage from '../Message/LeftMessage';
+import RightMessage from '../Message/RightMessage';
 ChatViewPopup.propTypes = {};
 
 function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
@@ -23,14 +21,6 @@ function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
   const [inputSectionOffset, setInputSectionOffset] = useState(0);
   const [limitCount, setLimitCount] = useState(10);
   const [hasMore, setHasMore] = useState(true);
-  // const [data, setData] = useState(null);
-  // const [loading, setLoading] = useState(null);
-  // const [error, setError] = useState(null);
-
-  
-  
-
-  // useEffect(() => {
     const { data, loading, error } = useCollectionQuery(
       `conversation-data-${conversationId}-${limitCount}`,
       query(
@@ -42,7 +32,6 @@ function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
       useEffect(() => {
         (async () => {
           if(currentChat.isShow === true && data){
-            console.log("update seen info:", currentUserId);
             await updateDoc(doc(db, 'conversations', conversationId), {
               [`seen-info-${currentUserId}`]: {
                   currentMsgSeen: data?.docs.map((doc) => doc.data()).length
@@ -51,24 +40,17 @@ function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
           }
         })()
     }, [data])
-  //   );
-  //   setData(data)
-  //   setLoading(loading)
-  //   setError(error)
-  // }, [limitCount])
   const {
     data: conversationDataInfo,
     loading: conversationLoading,
     error: conversationError,
   } = useDocumentQuery(`conversation-${conversationId}`, doc(db, 'conversations', conversationId));
 
+
   const conversationData = conversationDataInfo?.data();
 
   if (loading || error || conversationLoading || conversationError) {
     return null;
-  }
-  const fetchMoreData = () => {
-    
   }
   return (
     <div className="rounded-md overflow-hidden fixed right-24 bottom-5 bg-white" style={{ width: '338px', height: '455px' }}>
@@ -107,7 +89,8 @@ function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
                     {item.sender === currentUserId ? (
                       <RightMessage 
                       replyInfo={replyInfo} 
-                      setReplyInfo={setReplyInfo} m
+                      setReplyInfo={setReplyInfo}
+                      conversationId={conversationId}
                       message={item} />
                     ) : (
                       // <div>left </div>
@@ -118,6 +101,7 @@ function ChatViewPopup({conversationId, chatPartner, currentUserId}) {
                         index={index}
                         docs={data?.docs}
                         conversation={conversationData}
+                        conversationId={conversationId}
                       />
                     )}
                   </Fragment>

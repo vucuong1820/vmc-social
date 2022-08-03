@@ -33,9 +33,7 @@ const ChatView: FC<ChatViewProps> = ({
   replyInfo,
   setReplyInfo,
 }) => {
-  console.log(conversation)
   const { id: conversationId } = useParams();
-  console.log({conversationId})
 
   const currentUser = useStore((state) => state.currentUser);
 
@@ -43,7 +41,6 @@ const ChatView: FC<ChatViewProps> = ({
 
   const [limitCount, setLimitCount] = useState(10);
 
-  console.log({conversationId, limitCount})
   const { data, loading, error } = useCollectionQuery(
     `conversation-data-${conversationId}-${limitCount}`,
     query(
@@ -154,6 +151,7 @@ const ChatView: FC<ChatViewProps> = ({
                   replyInfo={replyInfo}
                   setReplyInfo={setReplyInfo}
                   message={item}
+                  conversationId={conversationId}
                 />
               ) : (
                 <LeftMessage
@@ -163,6 +161,7 @@ const ChatView: FC<ChatViewProps> = ({
                   index={index}
                   docs={data?.docs}
                   conversation={conversation}
+                  conversationId={conversationId}
                 />
               )}
               {Object.entries(conversation.seen).filter(

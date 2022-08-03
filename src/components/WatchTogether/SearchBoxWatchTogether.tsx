@@ -22,7 +22,6 @@ const SearchBoxWatchTogether: FC<any> = ({ autoFocus, setMovieInfo, setError }) 
 
     timeoutRef.current = setTimeout(async () => {
       const data = await searchWithKeyword(inputValue.trim());
-      console.log(data)
 
       setSuggestions(data.map((item) => ({name: item.name, id: item.id})));
     }, 500);

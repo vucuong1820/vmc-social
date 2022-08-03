@@ -49,7 +49,6 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
       paused: true,
       currentTime: 0,
     };
-    console.log(dataSubmit);
     try {
       await addDoc(collection(db, 'room-watch'), dataSubmit);
       setToast((prev) => ({

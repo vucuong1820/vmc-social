@@ -20,7 +20,6 @@ import ChatPopup from "../components/ChatPopup/ChatPopup.jsx";
 const Home: FC = () => {
   const getKey = (index: number) => `home-${index || 0}`;
   const currentUser = useStore((state) => state.currentUser);
-  console.log(currentUser)
 
 
   const { data, error, setSize } = useSWRInfinite(

@@ -21,6 +21,7 @@ interface LeftMessageProps {
   docs: any[];
   replyInfo: any;
   setReplyInfo: (value: any) => void;
+  conversationId: any;
 }
 
 const LeftMessage: FC<LeftMessageProps> = ({
@@ -29,6 +30,7 @@ const LeftMessage: FC<LeftMessageProps> = ({
   index,
   docs,
   setReplyInfo,
+  conversationId,
 }) => {
   const [isSelectReactionOpened, setIsSelectReactionOpened] = useState(false);
   const currentUser = useStore((state) => state.currentUser);
@@ -46,11 +48,8 @@ const LeftMessage: FC<LeftMessageProps> = ({
           conversation.users.length === 2 ? "px-8" : "px-[70px]"
         } -mb-2 flex`}
       >
-        {/* {!!message.replyTo && (
-          message?.replyTo &&  <ReplyBadge messageId={message?.replyTo} />  
-        )} */}
         {
-          message?.replyTo && <ReplyBadge messageId={message?.replyTo} />
+          message?.replyTo && <ReplyBadge messageId={message?.replyTo} conversationId={conversationId} />
         }
       </div>
       <div
