@@ -38,7 +38,6 @@ function CreatePost() {
       const data = new FormData(e.target);
       const formObject: any = Object.fromEntries(data.entries());
       const formData = new FormData();
-      console.log(formObject.img);
       formData.append('file', formObject.img);
       formData.append('upload_preset', 'vmc_social');
       formData.append('cloud_name', 'dblyqezyt');

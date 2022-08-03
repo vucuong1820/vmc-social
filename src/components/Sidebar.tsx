@@ -19,11 +19,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
   const handleSignOut = () => {
     signOut(auth);
   };
-
-  useEffect(() => {
-  console.log('mount')
-  }, [])
-  console.log({displayModal})
   return (
     <>
       <div
@@ -76,7 +71,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
               <p className="block sm:hidden xl:block">Explore</p>
             </Link>
 
-            <Link
+            {/* <Link
               onClick={() => {!currentUser && setDisplayModal('block')}}
               to={currentUser ? "/chat-box" : "/"}
               className={`flex items-center gap-2 transition ${
@@ -87,7 +82,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             >
               <i className="fas fa-comment w-[24px] text-xl"></i>
               <p className="block sm:hidden xl:block">Chat box</p>
-            </Link>
+            </Link> */}
 
             <Link
               to="/history"
@@ -133,8 +128,8 @@ const Sidebar: FC<SidebarProps> = ({ sidebarActive, setSidebarActive }) => {
             </button>
             
             <Link
-              // onClick={() => {!currentUser && setDisplayModal('block')}}   
-              to="/watch-together"
+              onClick={() => {!currentUser && setDisplayModal('block')}} 
+              to={currentUser ? "/watch-together" : "/"}
               className={`flex items-center gap-2 transition ${
                 location.pathname === '/history'
                   ? 'border-r-4 border-primary text-primary hover:brightness-125'

@@ -57,15 +57,17 @@ function EditPost() {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('file', fileValue || '');
-      formData.append('upload_preset', 'vmc_social');
-      formData.append('cloud_name', 'dblyqezyt');
-      const response = await axios.post('https://api.cloudinary.com/v1_1/dblyqezyt/image/upload', formData);
-      const imgUrl = response.data.secure_url;
+      let response;
+      if(fileValue){
+        formData.append('file', fileValue);
+        formData.append('upload_preset', 'vmc_social');
+        formData.append('cloud_name', 'dblyqezyt');
+        response = await axios.post('https://api.cloudinary.com/v1_1/dblyqezyt/image/upload', formData);
+      }
       const postRef = doc(db, 'posts', postDetails?.id);
       await updateDoc(postRef, {
         ...postDetails,
-        img: fileValue ? imgUrl : postDetails?.img,
+        img: fileValue ? response?.data?.secure_url : postDetails?.img,
       });
       console.log('done edit data');
       navigate('/post');

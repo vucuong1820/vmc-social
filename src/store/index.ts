@@ -15,7 +15,7 @@ export const useStore = create<any>((set: any) => ({
   setCurrentChat: (chat) => set((prev) => ({...prev, currentChat: chat})),
   voiceDetails: {
     appId: '3d3864b7b2b0419bacd5081751ce6a9e',
-    token: '0063d3864b7b2b0419bacd5081751ce6a9eIAAJODjQh8f1d+49vkWHxpVMALpmo7gC244s0080PmXfrmTNKL8AAAAAEABsSV6NjgvgYgEAAQCNC+Bi',
+    token: '0063d3864b7b2b0419bacd5081751ce6a9eIAD3W5nN4RpZ+/Bco+GIqgQK6/g5R/nR09nrhEx4vX6rt2TNKL8AAAAAEACOhaHHIW/qYgEAAQAhb+pi',
     channel: 'main'
   } ,
   displayVoiceModal: 'hidden',

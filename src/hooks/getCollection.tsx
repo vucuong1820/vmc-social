@@ -15,7 +15,6 @@ export const getCollection: (
   collection
 ) => {
   const [data, setData] = useState<QuerySnapshot<DocumentData> | null>(null);
-  console.log(key)
 
   const [loading, setLoading] = useState(!Boolean(data));
   const [error, setError] = useState(false);

@@ -98,3 +98,7 @@ input[type="checkbox"] {
 .chat-input .reply {
   background-color: #191a20 !important;
 }
+
+.emoji-mart.emoji-mart-dark {
+  width: 278px !important;
+}

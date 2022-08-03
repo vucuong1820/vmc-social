@@ -161,7 +161,7 @@ const InputSection: FC<any> = ({
     //     collection(db, 'conversations', conversationId, 'messages'),
     //     orderBy('createdAt'),
     //   ));
-      if(data) console.log(data.docs.length);
+      // if(data) console.log(data.docs.length);
     updateTimestamp();
   };
 
@@ -224,7 +224,6 @@ const InputSection: FC<any> = ({
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    console.log(file)
 
     if (!file) return;
 
@@ -495,10 +494,10 @@ const InputSection: FC<any> = ({
                 onClickAway={() => setIsIconPickerOpened(false)}
               >
                 {(ref) => (
-                  <div ref={ref} className="absolute bottom-full right-0">
+                  <div ref={ref} className="absolute bottom-full right-[-16px]">
                     <Suspense
                       fallback={
-                        <div className="flex h-[357px] w-[348px] items-center justify-center rounded-lg border-2 border-[#555453] bg-[#222222]">
+                        <div className="flex h-[357px] w-[300px] items-center justify-center rounded-lg border-2 border-[#555453] bg-[#222222]">
                           <Spin />
                         </div>
                       }

@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import VideoCall from '../components/VoiceCall/components/VideoCall';
-import FormModal from '../components/FormModal';
+import { useState } from "react";
+import VoiceModal from "../components/FormModal";
 
-VoiceCall.propTypes = {
-    
-};
+VoiceCall.propTypes = {};
 
 function VoiceCall(props) {
-    const [displayModal, setDisplayModal] = useState("hidden");
+  const [displayModal, setDisplayModal] = useState("hidden");
 
   return (
-    <FormModal displayModal={displayModal} onSetDisplayModal={setDisplayModal} />
+    <VoiceModal
+      displayModal={displayModal}
+      onSetDisplayModal={setDisplayModal}
+    />
   );
 }
 

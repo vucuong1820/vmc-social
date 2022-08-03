@@ -8,10 +8,10 @@ import Alert from "../Alert";
 
 interface ReplyBadgeProps {
   messageId: string;
+  conversationId: any;
 }
 
-const ReplyBadge: FC<ReplyBadgeProps> = ({ messageId }) => {
-  const { id: conversationId } = useParams();
+const ReplyBadge: FC<ReplyBadgeProps> = ({ messageId, conversationId }) => { 
 
   const [isAlertOpened, setIsAlertOpened] = useState(false);
 

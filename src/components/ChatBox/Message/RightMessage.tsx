@@ -21,12 +21,12 @@ interface RightMessageProps {
   message: MessageItem;
   replyInfo: any;
   setReplyInfo: (value: any) => void;
+  conversationId: any;
 }
 
-const RightMessage: FC<RightMessageProps> = ({ message, setReplyInfo }) => {
+const RightMessage: FC<RightMessageProps> = ({ message, setReplyInfo, replyInfo, conversationId }) => {
   const [isSelectReactionOpened, setIsSelectReactionOpened] = useState(false);
 
-  const { id: conversationId } = useParams();
 
   const currentUser = useStore((state) => state.currentUser);
 
@@ -52,15 +52,10 @@ const RightMessage: FC<RightMessageProps> = ({ message, setReplyInfo }) => {
     <div id={`message-${message.id}`}>
       <div className="-mb-2 flex justify-end px-8">
         {!!message.replyTo && (
-          <ReplyBadge messageId={message.replyTo as string} />
+          <ReplyBadge messageId={message.replyTo as string} conversationId={conversationId}/>
         )}
       </div>
       <div
-        onClick={(e) => {
-          if (e.detail === 2 && message.type !== "removed") {
-            setReplyInfo(message);
-          }
-        }}
         className={`group relative flex flex-row-reverse items-stretch gap-2 px-8 ${
           Object.keys(message.reactions || {}).length > 0 ? "mb-2" : ""
         }`}

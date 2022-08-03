@@ -30,11 +30,6 @@ function MemberView({ movieDetail, roomInfo, role, roomId }) {
     }
   }, [roomData?.currentTime]);
 
-  const handleTimeUpdate = (e) => {
-      return; 
-      console.log(e.target.currentTime)
-  }
-
   if (!roomData) return <Spin />;
   return (
     <>
@@ -66,7 +61,7 @@ function MemberView({ movieDetail, roomInfo, role, roomId }) {
                         ref.current.play();
                       }
                     }
-                    return <HlsPlayer onSeeked={handleTimeUpdate} playerRef={ref} {...props} src={`${props.src}`} />;
+                    return <HlsPlayer playerRef={ref} {...props} src={`${props.src}`} />;
                     // return (
                     //   <HlsPlayer
                     //     onSeeked={handleTimeUpdate}

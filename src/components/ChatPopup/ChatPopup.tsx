@@ -28,24 +28,7 @@ const ChatPopup: FC<ChatPopupProps> = ({ currentUserId }) => {
       where('users', 'array-contains', currentUserId || null)
     )
   );
-
-
-  // const { data: dataConservation, loading: loadingConservation, error: errorConversation } = useDocumentQuery(
-  //   `conversation-M2MF1Vntu1uFt72mL6IP`,
-  //   doc(db, "conversations", 'M2MF1Vntu1uFt72mL6IP' as string)
-  // );
-  // const conversation = dataConservation?.data() as ConversationInfo;
-  // const obj = useCollectionQuery(
-  //   `conversation-data-${'M2MF1Vntu1uFt72mL6IP'}-${0}`,
-  //   query(
-  //     collection(db, "conversations", 'M2MF1Vntu1uFt72mL6IP', "messages"),
-  //     orderBy("createdAt"),
-  //     limitToLast(10)
-  //   )
-  // );
   if(loading) return <div>Loading</div>;
-  // console.log({currentUserId, data, error, loading })
-  console.log('chat box')
   return (
     <div className="fixed bottom-4 right-8 ">
       {data?.docs.map((item) => (

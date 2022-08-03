@@ -30,7 +30,7 @@ const SignIn = () => {
 
     signInWithPopup(auth, provider)
       .then((res) => {
-        console.log(res.user);
+        // console.log(res.user);
       })
       .catch((err) => {
         setError(`Error: ${err.code}`);

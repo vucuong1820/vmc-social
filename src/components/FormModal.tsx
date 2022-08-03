@@ -1,6 +1,6 @@
-import React from 'react';
+import { FC } from "react";
 
-function VoiceModal({handleSubmit, voiceDetails, displayModal, onSetDisplayModal}) {
+const VoiceModal: FC<any> = ({handleSubmit, voiceDetails, displayModal, onSetDisplayModal}) => {
   return (
     <>
       <div
