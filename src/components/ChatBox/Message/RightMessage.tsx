@@ -194,6 +194,7 @@ const RightMessage: FC<RightMessageProps> = ({ message, setReplyInfo, replyInfo,
               >
                 {(ref) => (
                   <ReactionPopup
+                    conversationId={conversationId}
                     position="right"
                     forwardedRef={ref}
                     setIsOpened={setIsSelectReactionOpened}

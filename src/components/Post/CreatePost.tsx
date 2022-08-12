@@ -49,13 +49,13 @@ function CreatePost() {
         photoURL: currentUser?.photoURL,
       };
       const dataRef = doc(collection(db, 'posts'));
-      // setDoc(dataRef, {
-      //   ...formObject,
-      //   createdAt: serverTimestamp(),
-      // });
+      setDoc(dataRef, {
+        ...formObject,
+        createdAt: serverTimestamp(),
+      });
       console.log('done submit form');
       e.target.reset();
-      // navigate('/post');
+      navigate('/post');
     } catch (error) {
       console.log('error:', error);
     }

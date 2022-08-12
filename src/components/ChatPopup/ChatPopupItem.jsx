@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useUsersInfo } from '../../hooks/useUsersInfo';
-import { DEFAULT_AVATAR, IMAGE_PROXY } from '../../shared/constants';
-import { useStore } from '../../store';
-import './ChatPopupItem.css';
-import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
-import { db } from '../../shared/firebase';
-import { useCollectionQuery } from '../../hooks/useCollectionQuery';
+import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { useUsersInfo } from "../../hooks/useUsersInfo";
+import { DEFAULT_AVATAR, IMAGE_PROXY } from "../../shared/constants";
+import { useStore } from "../../store";
+import "./ChatPopupItem.css";
+import { collection, deleteDoc, doc, orderBy, query } from "firebase/firestore";
+import { db } from "../../shared/firebase";
+import { useCollectionQuery } from "../../hooks/useCollectionQuery";
 ChatPopupItem.propTypes = {};
 
 function ChatPopupItem({ conversation, conversationId, currentUserId }) {
   const { data: users, loading } = useUsersInfo(conversation.users);
   const filteredUsers = users?.filter((user) => user.id !== currentUserId);
-  const [msgNotSeen, setMsgNotSeen] = useState(0)
+  const [msgNotSeen, setMsgNotSeen] = useState(0);
   const setCurrentChat = useStore((state) => state.setCurrentChat);
-  const handleClickChatIcon = () => {
+  const handleClickChatIcon = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCurrentChat({
       isShow: true,
       conversationId,
@@ -22,38 +24,48 @@ function ChatPopupItem({ conversation, conversationId, currentUserId }) {
     });
   };
 
-  const { data, loading: loadingMessage, error } = useCollectionQuery(
+  const {
+    data,
+    loading: loadingMessage,
+    error,
+  } = useCollectionQuery(
     `conversation-data-${conversationId}-${null}`,
     query(
-      collection(db, 'conversations', conversationId, 'messages'),
-      orderBy('createdAt'),
+      collection(db, "conversations", conversationId, "messages"),
+      orderBy("createdAt")
       // limitToLast(20)
-    ));
+    )
+  );
 
   useEffect(() => {
-    const msgLength = data?.docs.map((doc) => doc.data()).length
+    const msgLength = data?.docs.map((doc) => doc.data()).length;
 
     const timeoutId = setTimeout(() => {
-      setMsgNotSeen(msgLength - conversation?.[`seen-info-${currentUserId}`]?.currentMsgSeen)
-    }, 200)
-    return () => clearTimeout(timeoutId)
+      setMsgNotSeen(
+        msgLength - conversation?.[`seen-info-${currentUserId}`]?.currentMsgSeen
+      );
+    }, 200);
+    return () => clearTimeout(timeoutId);
+  }, [data, conversation]);
 
-  }, [data, conversation])
-
-
-
-  const handleDeleteConversation = async () => {
+  const handleDeleteConversation = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
-      await deleteDoc(doc(db, 'conversations', conversationId))
-    }
-    catch(err) {
-      console.log("failed to delete conversation: ", err)
+      await deleteDoc(doc(db, "conversations", conversationId));
+      setCurrentChat({
+        isShow: false,
+        conversationId: "",
+        chatPartner: {},
+      });
+    } catch (err) {
+      console.log("failed to delete conversation: ", err);
     }
   };
 
   return (
     <div
-      style={{ boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px' }}
+      style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       className="popup-wrapper relative  mt-4 w-12 h-12 rounded-full z-50 flex items-center justify-center"
     >
       <img

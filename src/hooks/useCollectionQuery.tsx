@@ -17,8 +17,7 @@ export const useCollectionQuery: (
   const [data, setData] = useState<QuerySnapshot<DocumentData> | null>(null);
 
   const [loading, setLoading] = useState(!Boolean(data));
-  const [error, setError] = useState(false);
-
+  const [error, setError] = useState(false); 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection,

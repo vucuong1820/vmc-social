@@ -12,6 +12,7 @@ interface ReactionPopupProps {
   setIsOpened: (value: boolean) => void;
   messageId: string;
   currentReaction: number;
+  conversationId: string;
 }
 
 const ReactionPopup: FC<ReactionPopupProps> = ({
@@ -20,8 +21,9 @@ const ReactionPopup: FC<ReactionPopupProps> = ({
   setIsOpened,
   messageId,
   currentReaction,
+  conversationId,
 }) => {
-  const { id: conversationId } = useParams();
+  // const { id: conversationId } = useParams();
 
   const currentUser = useStore((state) => state.currentUser);
 
