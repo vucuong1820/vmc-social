@@ -1,51 +1,53 @@
-import { useEffect, useState } from 'react';
-import NavBar from '../components/NavBar';
-import Title from '../components/Title';
-import ConfirmDeleteRoom from '../components/WatchTogether/modal/ConfirmDeleteRoom.jsx';
-import CreateRoomWatchModal from '../components/WatchTogether/modal/CreateRoomWatchModal';
-import JoinRoomModal from '../components/WatchTogether/modal/JoinRoomModal.jsx';
+import { useEffect, useState } from "react";
+import NavBar from "../components/NavBar";
+import Title from "../components/Title";
+import ConfirmDeleteRoom from "../components/WatchTogether/modal/ConfirmDeleteRoom.jsx";
+import CreateRoomWatchModal from "../components/WatchTogether/modal/CreateRoomWatchModal";
+import JoinRoomModal from "../components/WatchTogether/modal/JoinRoomModal.jsx";
 
-import useFirestore from '../hooks/useFirestore';
-import { useStore } from '../store';
+import useFirestore from "../hooks/useFirestore";
+import { useStore } from "../store";
 CreateRoomWatch.propTypes = {};
 
 function CreateRoomWatch(props) {
-  const [confirmDelete, setConfirmDelete] = useState({
+  const [confirmDelete, setConfirmDelete] = useState<any>({
     isShow: false,
-    roomId: '',
+    roomId: "",
+    hostId: "",
   });
   const [joinRoom, setJoinRoom] = useState<any>({
     isShow: false,
     data: {},
   });
-  const [documents, isLoading] = useFirestore('room-watch', '');
+  const [documents, isLoading] = useFirestore("room-watch", "");
   const [displayModal, setDisplayModal] = useState(false);
   const { currentUser } = useStore((state) => state);
 
   const generateDotPassword = (password) => {
     const passwordLength = password.length;
     return Array.from({ length: passwordLength })
-      .map((item) => '*')
-      .join('');
+      .map((item) => "*")
+      .join("");
   };
   const roomList = [
     {
-      roomId: '123',
-      password: '345',
-      movie: 'SpiderMan',
+      roomId: "123",
+      password: "345",
+      movie: "SpiderMan",
     },
     {
-      roomId: '222',
-      password: '34561',
-      movie: 'SpiderMan 1',
+      roomId: "222",
+      password: "34561",
+      movie: "SpiderMan 1",
     },
     {
-      roomId: '33',
-      password: '341655',
-      movie: 'SpiderMan 2',
+      roomId: "33",
+      password: "341655",
+      movie: "SpiderMan 2",
     },
   ];
   useEffect(() => {}, []);
+  console.log(currentUser?.uid, confirmDelete);
   return (
     <>
       <Title value="Watch together - VMC Social" />
@@ -73,9 +75,7 @@ function CreateRoomWatch(props) {
                 <th scope="col" className="px-6 py-3">
                   Password
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  
-                </th>
+                <th scope="col" className="px-6 py-3"></th>
                 <th scope="col" className="px-6 py-3">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -84,15 +84,26 @@ function CreateRoomWatch(props) {
             <tbody>
               {documents.map((room) => (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                  >
                     {room.movie}
                   </th>
                   <td className="px-6 py-4">{room.id}</td>
-                  <td className="px-6 py-4">{generateDotPassword(room.password)}</td>
+                  <td className="px-6 py-4">
+                    {generateDotPassword(room.password)}
+                  </td>
                   <td className="px-6 py-4"></td>
                   <td className="px-6 py-4 text-right">
                     <a
-                      onClick={() => setConfirmDelete({ isShow: true, roomId: room.id })}
+                      onClick={() =>
+                        setConfirmDelete(() => ({
+                          isShow: true,
+                          hostId: room.hostId,
+                          roomId: room.id,
+                        }))
+                      }
                       href="#"
                       className="mr-6 font-medium text-red-600 dark:text-red-600 hover:underline"
                     >
@@ -120,11 +131,13 @@ function CreateRoomWatch(props) {
           onSetDisplayModal={setDisplayModal}
         />
       )}
-      {confirmDelete.isShow && currentUser?.uid === confirmDelete.roomId && (
+      {confirmDelete.isShow && currentUser?.uid === confirmDelete.hostId && (
         <ConfirmDeleteRoom
           title="Confirm delete room"
           displayModal={confirmDelete.isShow}
-          onSetDisplayModal={(display) => setConfirmDelete({ isShow: false, roomId: '' })}
+          onSetDisplayModal={(display) =>
+            setConfirmDelete({ isShow: false, roomId: "" })
+          }
           roomId={confirmDelete.roomId}
         />
       )}

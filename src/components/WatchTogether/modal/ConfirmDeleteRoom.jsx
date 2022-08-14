@@ -7,10 +7,11 @@ import { db } from "../../../shared/firebase"
 const ConfirmDeleteRoom  = ({roomId, title, displayModal, onSetDisplayModal}) => {
     const navigate = useNavigate()
     const handleDeleteRoom = async () => {
-
+    console.log('detete', roomId)
         try {
             await deleteDoc(doc(db, "room-watch", roomId));
-            console.log('delete room successfully!')
+            console.log('delete room successfully!');
+            onSetDisplayModal();
         } catch (error) {
             console.log('error:',error)
         }

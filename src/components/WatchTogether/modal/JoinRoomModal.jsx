@@ -1,16 +1,30 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
+import Toast from '../../Toast'
 
 const JoinRoomModal = ({ title, displayModal, onClose, data, roomId }) => {
   const navigate = useNavigate();
-  const [password, setPassword] = useState('')
-  const handleSubmit = () => {
-    console.log('submit');
+  const [password, setPassword] = useState('');
+  const [toast, setToast] = useState({
+    isShow: false,
+    error: false,
+    message: "",
+    duration: 3000,
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
       if((password === data.password)){
           navigate(`/watch-together/${roomId}`)
       }else {
-        console.log('wrong pass')
+        console.log('wrong pass');
+        setToast({
+          isShow: true,
+          error: true,
+          message: "Invalid password",
+          duration: 3000,
+        })
       }
   }
   return (
@@ -39,7 +53,7 @@ const JoinRoomModal = ({ title, displayModal, onClose, data, roomId }) => {
             </button>
           </div>
           <div className="space-y-6 p-6">
-            <form>
+            <form onSubmit={handleSubmit}>
               
               <div className="mb-6">
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -68,11 +82,10 @@ const JoinRoomModal = ({ title, displayModal, onClose, data, roomId }) => {
               type="submit"
               className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Join Room Room
+              Join Room
             </button>
             <button
-            //   onClick={() => onSetDisplayModal('hidden')}
-              type="button"
+              onClick={onClose}
               className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
             >
               Discard
@@ -80,14 +93,14 @@ const JoinRoomModal = ({ title, displayModal, onClose, data, roomId }) => {
           </div>
         </div>
       </div>
-      {/* {toast.isShow && (
+      {toast.isShow && (
         <Toast
           duration={toast.duration}
           error={toast.error}
           message={toast.message}
           onSetIsShow={(res) => setToast((prev) => ({ ...prev, isShow: res }))}
         />
-      )} */}
+      )}
     </div>
   );
 };

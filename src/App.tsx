@@ -13,6 +13,7 @@ import { client } from "./components/VoiceCall/settings";
 import { auth, db } from "./shared/firebase";
 import { useStore } from "./store";
 import "emoji-mart/css/emoji-mart.css";
+import stickers from './data/stickers.json'
 
 const App: FC = () => {
   const [localAudioTrack, setLocalAudioTrack] = useState<any>();

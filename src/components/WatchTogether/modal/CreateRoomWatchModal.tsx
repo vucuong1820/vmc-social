@@ -1,10 +1,10 @@
-import { addDoc, collection } from 'firebase/firestore';
-import { FC, useState } from 'react';
-import { db } from '../../../shared/firebase';
-import Toast from '../../Toast';
-import SearchBoxWatchTogether from '../SearchBoxWatchTogether';
-import '../index.css';
-import { useStore } from '../../../store';
+import { addDoc, collection } from "firebase/firestore";
+import { FC, useState } from "react";
+import { db } from "../../../shared/firebase";
+import Toast from "../../Toast";
+import SearchBoxWatchTogether from "../SearchBoxWatchTogether";
+import "../index.css";
+import { useStore } from "../../../store";
 
 interface ModalProps {
   title: string;
@@ -12,22 +12,30 @@ interface ModalProps {
   onSetDisplayModal: (state: any) => void;
 }
 
-const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDisplayModal }) => {
+const CreateRoomWatchModal: FC<ModalProps> = ({
+  title,
+  displayModal,
+  onSetDisplayModal,
+}) => {
   const currentUser = useStore((state) => state.currentUser);
 
   const [toast, setToast] = useState({
     isShow: false,
     error: false,
-    message: '',
+    message: "",
     duration: 3000,
   });
   const [movieInfo, setMovieInfo] = useState<any>({});
-  const [password, setPassword] = useState<any>('');
+  const [password, setPassword] = useState<any>("");
   const [error, setError] = useState({
     movie: false,
     password: false,
   });
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    console.log(e);
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
     if (!movieInfo?.id) {
       setError((prev) => ({ ...prev, movie: true }));
     }
@@ -50,24 +58,24 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
       currentTime: 0,
     };
     try {
-      await addDoc(collection(db, 'room-watch'), dataSubmit);
+      await addDoc(collection(db, "room-watch"), dataSubmit);
       setToast((prev) => ({
         ...prev,
         isShow: true,
         error: false,
-        message: 'Create room watch together successfully!',
+        message: "Create room watch together successfully!",
       }));
 
       setMovieInfo({});
-      setPassword('');
-      onSetDisplayModal('hidden');
+      setPassword("");
+      onSetDisplayModal("hidden");
     } catch (error) {
-      console.log('failed to create room to firestore:', error);
+      console.log("failed to create room to firestore:", error);
       setToast((prev) => ({
         ...prev,
         isShow: true,
         error: true,
-        message: 'Failed to create room. Try again later!',
+        message: "Failed to create room. Try again later!",
       }));
     }
   };
@@ -83,20 +91,27 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
   return (
     <div
       id="exampleModal"
-      style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
       aria-hidden="true"
       className={`h-modal fixed top-0 right-0 left-0 z-50 ${displayModal} w-full overflow-y-auto overflow-x-hidden md:inset-0 md:h-full`}
     >
       <div className="relative top-1/4 left-1/4 h-full w-full max-w-2xl p-4 md:h-auto">
         <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
           <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              {title}
+            </h3>
             <button
               type="button"
               className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-              onClick={() => onSetDisplayModal('hidden')}
+              onClick={() => onSetDisplayModal("hidden")}
             >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="h-5 w-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   fillRule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -106,17 +121,30 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
             </button>
           </div>
           <div className="space-y-6 p-6">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-6">
-                <label htmlFor="movie" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <label
+                  htmlFor="movie"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
                   Movie
                 </label>
-                <SearchBoxWatchTogether setMovieInfo={setMovieInfo} setError={setError} />
-                {error.movie && <div className="mt-1 helper-text text-sm text-red-600">Please choose a movie</div>}
+                <SearchBoxWatchTogether
+                  setMovieInfo={setMovieInfo}
+                  setError={setError}
+                />
+                {error.movie && (
+                  <div className="mt-1 helper-text text-sm text-red-600">
+                    Please choose a movie
+                  </div>
+                )}
               </div>
 
               <div className="mb-6">
-                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
                   Room password
                 </label>
                 <input
@@ -130,7 +158,8 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
                 />
                 {error.password && (
                   <div className="mt-1 helper-text text-sm text-red-600">
-                    Password is not acceptable (required and at least 6 characters)
+                    Password is not acceptable (required and at least 6
+                    characters)
                   </div>
                 )}
               </div>
@@ -145,8 +174,7 @@ const CreateRoomWatchModal: FC<ModalProps> = ({ title, displayModal, onSetDispla
               Create Room
             </button>
             <button
-              onClick={() => onSetDisplayModal('hidden')}
-              type="button"
+              onClick={() => onSetDisplayModal("hidden")}
               className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
             >
               Discard
