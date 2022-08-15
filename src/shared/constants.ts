@@ -19,6 +19,8 @@ export const IMAGE_CARD_SIZE = {
   },
 };
 
+export const STICKERS_URL =
+  "https://cdn.jsdelivr.net/gh/vucuong1820/zalo-stickers/data/favourite.json";
 
 export const DEFAULT_AVATAR = "/default-avatar.png";
 export const IMAGE_PROXY = (url: string) =>
