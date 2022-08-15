@@ -76,7 +76,7 @@ function MemberView({ movieDetail, roomInfo, role, roomId }) {
                   }}
                 </Player>
               </div>
-              <span class="w-max block mt-8 bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">
+              <span className="w-max block mt-8 bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">
                 {role}
               </span>
 

@@ -99,11 +99,11 @@ const SignIn = () => {
             {mode === 'phone' ? (
               <>
               <div onClick={() => setMode('')} className="flex items-center cursor-pointer mr-auto text-gray-400 hover:text-gray-300">
-                <i class="fas fa-angle-left w-[24px] text-xl"></i>
+                <i className="fas fa-angle-left w-[24px] text-xl"></i>
                 <div>Back</div>
               </div>
-              <div class="w-full mb-6">
-                <label htmlFor="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+              <div className="w-full mb-6">
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                   Your Phone number <br/>
                   (Eg: +84-123456789)
                 </label>
@@ -121,7 +121,7 @@ const SignIn = () => {
                 </div>
                 {isSend && (
                   <div className="mt-4">
-                    <label htmlFor="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       OTP Confimation <br/>
                       Eg: 123456
                     </label>
@@ -141,7 +141,7 @@ const SignIn = () => {
                 <button
                   onClick={isSend ? verifyOtp : requestOtp}
                   type="submit"
-                  class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   {isSend ? 'Confirm' : 'Send OTP'}
                 </button>

@@ -77,7 +77,7 @@ function ChatPopupItem({ conversation, conversationId, currentUserId }) {
         onClick={handleDeleteConversation}
         className="cursor-pointer hover:opacity-80 delete-popup absolute top-0 rounded-full flex items-center justify-center bg-slate-400 right-[-5px] w-[18px] h-[18px]	"
       >
-        <i class="fas fa-times"></i>
+        <i className="fas fa-times"></i>
       </div>
 
       {msgNotSeen > 0 && (

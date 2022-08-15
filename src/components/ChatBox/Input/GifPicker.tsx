@@ -30,7 +30,7 @@ const GifPicker: FC<GifPickerProps> = ({ setIsOpened, onSelect }) => {
       {(ref) => (
         <div
           ref={ref}
-          className="border-dark-lighten absolute left-[-92px] bottom-full flex h-96 w-96 flex-col items-stretch rounded-lg border-2 bg-[#222222] p-4 shadow-2xl"
+          className="border-dark-lighten w-80 h-80 absolute left-[-92px] bottom-full flex h-80 w- 80 flex-col items-stretch rounded-lg border-2 bg-[#222222] p-4 shadow-2xl"
         >
           <div className="relative">
             <input

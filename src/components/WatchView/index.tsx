@@ -1,16 +1,15 @@
 import { FC, useEffect } from 'react';
-import { PROXY, subtitleProxy } from '../../shared/constants';
+import { subtitleProxy } from '../../shared/constants';
 
-import Comment from './Comment';
-import { DetailType } from '../../shared/types';
 import HlsPlayer from 'react-hls-player';
-import MetaData from './MetaData';
-import NavBar from '../NavBar';
 import { Player } from 'react-tuby';
-import Similar from './Similar';
+import { DetailType } from '../../shared/types';
+import NavBar from '../NavBar';
 import Skeleton from '../Skeleton';
 import Title from '../Title';
-import { Link } from 'react-router-dom';
+import Comment from './Comment';
+import MetaData from './MetaData';
+import Similar from './Similar';
 
 interface WatchViewProps {
   data?: DetailType;

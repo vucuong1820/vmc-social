@@ -110,9 +110,9 @@ function WatchTogether() {
               </div>
               {
                 roomInfo?.hostId === currentUser?.uid ? (
-                  <span class="w-max block mt-8 bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Host</span>
+                  <span className="w-max block mt-8 bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Host</span>
                 ) : (
-                  <span class="w-max block mt-8 bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Member</span>
+                  <span className="w-max block mt-8 bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">Member</span>
                 )
               }
               <MetaData data={movieDetail?.data} />

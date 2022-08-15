@@ -1,11 +1,8 @@
 import { FC, Fragment, useState } from "react";
 
+import stickersDataJson from "../../../../public/zalo-stickers/data/favourite.json";
 import ClickAwayListener from "../ClickAwayListener";
-import Spin from "react-cssfx-loading/src/Spin";
 import SpriteRenderer from "../SpriteRenderer";
-import { StickerCollections } from "../../../shared/types";
-import { useFetch } from "../../../hooks/useFetch";
-import { STICKERS_URL } from "../../../shared/constants";
 
 interface StickerPickerOpened {
   setIsOpened: (value: boolean) => void;
@@ -24,9 +21,9 @@ const getRecentStickers = () => {
 };
 
 const StickerPicker: FC<StickerPickerOpened> = ({ setIsOpened, onSelect }) => {
-  const { data, loading, error } = useFetch<StickerCollections>("sticker", () =>
-    fetch(STICKERS_URL).then((res) => res.json())
-  );
+  // const { data, loading, error } = useFetch<StickerCollections>("sticker", () =>
+  //   fetch(STICKERS_URL).then((res) => res.json())
+  // );
 
   const [recentStickers, setRecentStickers] = useState(getRecentStickers());
 
@@ -43,13 +40,8 @@ const StickerPicker: FC<StickerPickerOpened> = ({ setIsOpened, onSelect }) => {
       {(ref) => (
         <div
           ref={ref}
-          className="border-dark-lighten absolute -left-16 bottom-full h-96 w-96 rounded-lg border-2 bg-[#222222] shadow-2xl"
+          className="border-dark-lighten absolute -left-16 bottom-full h-80 w-80 rounded-lg border-2 bg-[#222222] shadow-2xl"
         >
-          {loading || error ? (
-            <div className="flex h-full w-full items-center justify-center">
-              <Spin />
-            </div>
-          ) : (
             <div className="flex h-full w-full flex-col">
               <div className="flex-grow overflow-y-auto p-3 pt-1">
                 {recentStickers.length > 0 && (
@@ -75,7 +67,7 @@ const StickerPicker: FC<StickerPickerOpened> = ({ setIsOpened, onSelect }) => {
                   </>
                 )}
 
-                {data?.map((collection) => (
+                {stickersDataJson?.map((collection) => (
                   <Fragment key={collection.id}>
                     <h1 className="mt-2" id={`sticker-${collection.id}`}>
                       {collection.name}
@@ -113,7 +105,7 @@ const StickerPicker: FC<StickerPickerOpened> = ({ setIsOpened, onSelect }) => {
                     <i className="bx bx-time text-[26px] leading-[26px]"></i>
                   </button>
                 )}
-                {data?.map((collection) => (
+                {stickersDataJson?.map((collection) => (
                   <img
                     onClick={() =>
                       document
@@ -127,7 +119,7 @@ const StickerPicker: FC<StickerPickerOpened> = ({ setIsOpened, onSelect }) => {
                 ))}
               </div>
             </div>
-          )}
+          
         </div>
       )}
     </ClickAwayListener>
