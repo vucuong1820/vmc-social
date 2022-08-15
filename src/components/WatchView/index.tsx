@@ -35,7 +35,7 @@ const WatchView: FC<WatchViewProps> = ({ data, sources, subtitles, episodeIndex 
 
   useEffect(() => {
     if (!data) return;
-    let existing = JSON.parse(localStorage.getItem('filmhot-recent') || '[]') as {
+    let existing = JSON.parse(localStorage.getItem('vmcsocial-recent') || '[]') as {
       id: string;
       category: number;
       coverVerticalUrl: string;
@@ -53,7 +53,7 @@ const WatchView: FC<WatchViewProps> = ({ data, sources, subtitles, episodeIndex 
       name: data.name,
     });
 
-    localStorage.setItem('filmhot-recent', JSON.stringify(existing));
+    localStorage.setItem('vmcsocial-recent', JSON.stringify(existing));
   }, [data]);
   return (
     <>
@@ -61,7 +61,7 @@ const WatchView: FC<WatchViewProps> = ({ data, sources, subtitles, episodeIndex 
         <Title
           value={`Watch ${data.name}${
             typeof episodeIndex !== 'undefined' ? ` - Episode ${episodeIndex + 1}` : ''
-          } - FilmHot`}
+          } - VMCSocial`}
         />
       )}
       <div className="flex justify-center">

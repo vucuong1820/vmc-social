@@ -8,7 +8,7 @@ import { resizeImage } from "../shared/constants";
 
 const getHistory = () => {
   try {
-    const existing = JSON.parse(localStorage.getItem("filmhot-recent") || "[]");
+    const existing = JSON.parse(localStorage.getItem("vmcsocial-recent") || "[]");
     return existing;
   } catch {
     return [];
@@ -19,7 +19,7 @@ const History: FC = () => {
   const [data, setData] = useState(getHistory());
 
   const clearHistory = () => {
-    localStorage.removeItem("filmhot-recent");
+    localStorage.removeItem("vmcsocial-recent");
     setData(getHistory());
   };
 
